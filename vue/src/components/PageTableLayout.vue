@@ -72,7 +72,7 @@ export default {
     tableColumns: {
       handler (val) {
         val.map(i => {
-          if(i.type === 'button') this.handleButton = i.handleButton
+          if(i.renderType === 'button') this.handleButton = i.handleButton
         })
       },
       immediate: true,
@@ -91,7 +91,7 @@ export default {
       props: ['item'],
       render: function (h) {
         const item = this.item
-        if (item.type === 'slot') {
+        if (item.renderType === 'slot') {
           return h('el-table-column', {
             props: {
               label: item.label,
@@ -103,7 +103,7 @@ export default {
             scopedSlots: item.slot,
             slot: item.slot
           }, [this.$parent.$parent.$parent.$scopedSlots[item.slot]])
-        } else if (item.type === 'button') {
+        } else if (item.renderType === 'button') {
           return h('el-table-column', {
             props: {
               label: item.label,

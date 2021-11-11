@@ -59,6 +59,7 @@ export default {
       tableColumns: [
         {
           prop: 'name',
+          width: 800,
           renderHeader: this.renderHeader
         },
         {

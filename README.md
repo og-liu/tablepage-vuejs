@@ -382,7 +382,7 @@ export default {
 ## tableColumnsItem 表格列配置
 > 这里的 `tableColumnsItem` 并非真的有这个属性，而是代指 `tableColumns` 的每个子元素、表示的是每一列的具体配置信息，这里的每个子元素之间的顺序在页面上展示的顺序对应，例如: 我希望在第 3 列展示 `性别`，那么就将 `性别` 相关的配置放在第 3 个子元素位置。
 
-### type 列类型
+### renderType 列类型
 
 目前表格列的类型分为三种: `普通列`、`操作按钮展示列`、`自定义列`，上述展示的都属于 `普通列`。
 
@@ -409,11 +409,11 @@ export default {
             },
             {
               label: '自定义列',
-              type: 'slot'
+              renderType: 'slot'
             },
             {
               label: '操作',
-              type: 'button'
+              renderType: 'button'
             }
           ]
         }
@@ -511,7 +511,11 @@ export default {
 ```
 
 ### prop 渲染字段
-它只作用于 `普通列`，应该和 `tableData` 对应，例如我希望第一列展示 `姓名`，则需要找到 `tableData` 里 `姓名` 对应的字段赋值给 `prop`
+
+只作用于 `普通列`，因为 `自定义列` 通过插槽渲染字段，而操作列不需要渲染字段，它应该和 `tableData` 对应，例如我希望第一列展示 `姓名`，则需要找到 `tableData` 里 `姓名` 对应的字段赋值给 `prop`
+
+- 类型: `String`
+- 必传: `普通列必传`
 
 ```vue
 <template>
@@ -543,9 +547,47 @@ export default {
 </script>
 ```
 
-### width 宽度
-### minWidth 最小宽度
-### maxWidth 最大宽度
+### width 列宽度
+
+对应列的宽度，可以传数值类型或者字符串类型的数字，带单位（px）也能识别，推荐传数值就好。
+
+- 类型: `String || Number`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name',
+              width: 200
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
+
+### minWidth 列最小宽度
+### maxWidth 列最大宽度
 ### type 列类型
 ### slot 列插槽
 ### handleButton 操作按钮集合
