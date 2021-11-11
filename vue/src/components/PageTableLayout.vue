@@ -121,7 +121,8 @@ export default {
               align: item.align || 'center',
               width: item.width,
               minWidth: item.minWidth,
-              showOverflowTooltip: true
+              showOverflowTooltip: true,
+              renderHeader: item.renderHeader
             }
           })
         }

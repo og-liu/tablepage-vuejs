@@ -59,7 +59,7 @@ export default {
       tableColumns: [
         {
           prop: 'name',
-          label: '姓名'
+          renderHeader: this.renderHeader
         },
         {
           prop: 'birthday',
@@ -98,6 +98,24 @@ export default {
     this.getData()
   },
   methods: {
+    renderHeader(createElement, { column }) {
+      return createElement('span', [
+          createElement('span', ['姓名' + ' ']),
+          createElement('el-popover', {
+            props: {
+              placement: 'top',
+              trigger: 'hover',
+              popperClass: 'titshowTip'
+            }}, [createElement('span',
+            ['renderHeader']),
+            createElement('span', {
+              slot: 'reference',
+              'class': { 'el-icon-question': true }
+            })
+          ])
+        ]
+      )
+    },
     // 请求接口获取列表数据
     getData(page = 1, pageSize = 10, search = {}) {
       this.loading = true

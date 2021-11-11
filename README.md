@@ -87,7 +87,18 @@ export default {
   },
   data() {
     return {
-      tableData: []
+      tableData: [
+        {
+          name: '大山',
+          birthday: '2003-03-29',
+          sex: '男',
+          phone: '18888888888',
+          hobbies: '动漫',
+          education: '本科',
+          occupation: '程序员',
+          address: '广东省 广州市 白云区'
+        }
+      ]
     }
   }
 }
@@ -234,7 +245,7 @@ export default {
 > 下面将详细介绍组件的每一个 `prop`、`provide`、`event` 的使用， 建议按顺序阅读
 
 ## title 页面标题
-> 用于展示页面标题
+> 用于展示页面标题，必传属性，每个页面都应该有一个标题
 
 - 传入方式: `Prop`
 - 类型: `String`
@@ -243,12 +254,12 @@ export default {
 ##### 用法
 ```vue
 <template>
-  <table-page title="产品列表"></table-page>
+  <table-page title="高质量人类"></table-page>
 </template>
 ```
 
 ## subtitle 副标题
-> 用于展示副标题
+> 用于展示副标题，可选属性，不需要不传即可
 
 - 传入方式: `Prop`
 - 类型: `String`
@@ -257,7 +268,7 @@ export default {
 ##### 用法
 ```vue
 <template>
-  <table-page title="产品列表" subtitle="拼团集采价更低"></table-page>
+  <table-page title="高质量人类" subtitle="让天下没有难找的对象"></table-page>
 </template>
 ```
 
@@ -271,14 +282,25 @@ export default {
 ##### 用法
 ```vue
 <template>
-  <table-page title="产品列表" :tableData="tableData"></table-page>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
   data() {
     return {
-      tableData: []
+      tableData: [
+        {
+          name: '大山',
+          birthday: '2003-03-29',
+          sex: '男',
+          phone: '18888888888',
+          hobbies: '动漫',
+          education: '本科',
+          occupation: '程序员',
+          address: '广东省 广州市 白云区'
+        }
+      ]
     }
   }
 }
@@ -303,24 +325,14 @@ export default {
     return {
       tableData: [
         {
-          "erp_sku_sn": "UM574",
-          "attribute_name": "12*2mg",
-          "unit_name": "包、箱、盒",
-          "factory_name": "三九制药有限公司",
-          "promotion_available_stock": "3747.00",
-          "whole_price": "46.00",
-          "ladder_price": "￥45.00",
-          "channel": "商城"
-        },
-        {
-          "erp_sku_sn": "UM573",
-          "attribute_name": "12*2mg",
-          "unit_name": "包、箱、盒",
-          "factory_name": "三九制药有限公司",
-          "promotion_available_stock": "3747.00",
-          "whole_price": "46.00",
-          "ladder_price": "￥45.00",
-          "channel": "商城"
+          name: '大山',
+          birthday: '2003-03-29',
+          sex: '男',
+          phone: '18888888888',
+          hobbies: '动漫',
+          education: '本科',
+          occupation: '程序员',
+          address: '广东省 广州市 白云区'
         }
       ]
     }
@@ -329,36 +341,36 @@ export default {
     return {
       tableColumns: [
         {
-          prop: 'erp_sku_sn',
-          label: '产品编码'
+          prop: 'name',
+          label: '姓名'
         },
         {
-          prop: 'attribute_name',
-          label: '规格',
+          prop: 'birthday',
+          label: '出生日期',
         },
         {
-          prop: 'unit_name',
-          label: '单位',
+          prop: 'sex',
+          label: '性别',
         },
         {
-          prop: 'factory_name',
-          label: '生产厂家'
+          prop: 'phone',
+          label: '联系电话'
         },
         {
-          prop: 'promotion_available_stock',
-          label: '库存数量'
+          prop: 'hobbies',
+          label: '爱好'
         },
         {
-          prop: 'whole_price',
-          label: '供应价'
+          prop: 'education',
+          label: '学历'
         },
         {
-          prop: 'ladder_price',
-          label: '拼团价'
+          prop: 'occupation',
+          label: '职业'
         },
         {
-          prop: 'channel',
-          label: '发布渠道'
+          prop: 'address',
+          label: '联系地址'
         }
       ]
     }
@@ -368,16 +380,174 @@ export default {
 ```
 
 ## tableColumnsItem 表格列配置
-> 这里的 `tableColumnsItem` 并非真的有这个属性，而是代指 `tableColumns` 的每个子元素、表示的是每一列的具体配置信息
+> 这里的 `tableColumnsItem` 并非真的有这个属性，而是代指 `tableColumns` 的每个子元素、表示的是每一列的具体配置信息，这里的每个子元素之间的顺序在页面上展示的顺序对应，例如: 我希望在第 3 列展示 `性别`，那么就将 `性别` 相关的配置放在第 3 个子元素位置。
+
+### type 列类型
+
+目前表格列的类型分为三种: `普通列`、`操作按钮展示列`、`自定义列`，上述展示的都属于 `普通列`。
+
+- 类型: `String`
+- 必传: `否`
+- 可选值: `slot（插槽、自定义列）`、`button（操作按钮展示、末位列）`，不传则默认是 `普通列`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name'
+            },
+            {
+              label: '自定义列',
+              type: 'slot'
+            },
+            {
+              label: '操作',
+              type: 'button'
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
+### label 表头文本信息
+
+- 类型: `String`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名'
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
+### renderHeader 自定义表头
+
+有时候表头比较特殊，光展示文本不满足需求，那么就可以不传 `label`，使用 `renderHeader` 自定义表头，它接收一个 `render` 函数，作为表头渲染
+
+- 类型: `function`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              prop: 'name',
+              renderHeader: this.renderHeader
+            }
+          ]
+        }
+      },
+      methods: {
+        renderHeader(createElement, { column }) {
+          return createElement('span', [
+            createElement('span', ['姓名']),
+            createElement('el-popover', {
+              props: {
+                placement: 'top',
+                trigger: 'hover',
+                popperClass: 'titshowTip'
+              }}, [createElement('span',
+                ['自定义表头']),
+              createElement('span', {
+                slot: 'reference',
+                'class': { 'el-icon-question': true }
+              })
+            ])]
+          )
+        }
+      }
+    }
+  }
+}
+</script>
+```
 
 ### prop 渲染字段
-### label 表头文本信息
+它只作用于 `普通列`，应该和 `tableData` 对应，例如我希望第一列展示 `姓名`，则需要找到 `tableData` 里 `姓名` 对应的字段赋值给 `prop`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name'
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
 ### width 宽度
 ### minWidth 最小宽度
 ### maxWidth 最大宽度
 ### type 列类型
 ### slot 列插槽
-
 ### handleButton 操作按钮集合
 ### handleButtonItem 操作按钮配置
 #### icon 图标名称
@@ -535,9 +705,7 @@ export default {
 
 [comment]: <> (![]&#40;https://cdn.jsdelivr.net/gh/og-liu/image-host/20211029172224.png&#41;)
 
-
 [comment]: <> (浮动按钮改造成可以定位，分页改造成注入)
-
 
 [comment]: <> (在头部右侧新增浮动按钮，可以配置不同的 `文本内容`，`类型（普通按钮、下拉菜单按钮等）`、`风格（颜色）`、`事件` 等等。)
 
