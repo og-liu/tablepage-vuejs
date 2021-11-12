@@ -26,6 +26,29 @@ export default {
   },
   provide() {
     return {
+      floatButtonSet: [
+        {
+          type: 'Button',
+          text: '新增',
+          style: 'primary',
+          onClick: this.added
+        },
+        {
+          type: 'Dropdown',
+          text: '导出数据',
+          style: 'primary',
+          list: [
+            {
+              text: '导出高质量男性',
+              onClick: this.edit
+            },
+            {
+              text: '导出高质量女性',
+              onClick: this.edit
+            }
+          ],
+        }
+      ],
       searchBarSet: [
         {
           type: 'select',
@@ -59,7 +82,6 @@ export default {
       tableColumns: [
         {
           prop: 'name',
-          width: 800,
           renderHeader: this.renderHeader
         },
         {
@@ -99,6 +121,8 @@ export default {
     this.getData()
   },
   methods: {
+    added() {},
+    edit() {},
     renderHeader(createElement, { column }) {
       return createElement('span', [
           createElement('span', ['姓名' + ' ']),
@@ -108,7 +132,7 @@ export default {
               trigger: 'hover',
               popperClass: 'titshowTip'
             }}, [createElement('span',
-            ['renderHeader']),
+            ['自定义表头']),
             createElement('span', {
               slot: 'reference',
               'class': { 'el-icon-question': true }

@@ -66,7 +66,13 @@ export default {
     // 下拉菜单按钮
     renderDropdownButton(h, context) {
       const data = context.props.data
-      return h('el-button', {props: {plain: true, size: 'small', type: data.style}}, [
+      return h('el-button', {
+        props: {
+          plain: true,
+          size: 'small',
+          type: data.style
+        }
+      }, [
         data.text,
         h('i', {'class': {'el-icon-arrow-down': true, 'el-icon--right': true}})
       ])

@@ -18,8 +18,7 @@
       <search-bar @onSearch="onSearch"></search-bar>
       <table-layout :tableData="tableData" :loading="loading"></table-layout>
     </div>
-    <table-pagination @sizeChange="sizeChange" @currentChange="currentChange">
-    </table-pagination>
+    <table-pagination @sizeChange="sizeChange" @currentChange="currentChange"></table-pagination>
   </div>
 </template>
 
@@ -109,7 +108,7 @@ export default {
     .tip-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       .tip-title {
         display: flex;
         align-items: end;
@@ -150,12 +149,5 @@ export default {
       text-align: center;
     }
   }
-}
-[float-right] {
-  float: right;
-}
-
-[float-left] {
-  float: left;
 }
 </style>
