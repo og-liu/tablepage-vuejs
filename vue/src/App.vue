@@ -3,8 +3,10 @@
     title="高质量人类"
     subtitle="让天下没有难找的对象"
     :tableData="tableData"
+    backButton
     @currentChange="currentChange"
     @sizeChange="sizeChange"
+    @goBack="goBack"
     @onSearch="onSearch"
     :loading="loading">
   </table-page>
@@ -29,24 +31,30 @@ export default {
       floatButtonSet: [
         {
           type: 'Button',
-          text: '新增',
+          text: '新增高质量人类',
           style: 'primary',
           onClick: this.added
         },
         {
           type: 'Dropdown',
           text: '导出数据',
-          style: 'primary',
           list: [
             {
-              text: '导出高质量男性',
-              onClick: this.edit
+              text: '导出高质量男孩',
+              onClick: this.leadingOutBoys
             },
             {
-              text: '导出高质量女性',
-              onClick: this.edit
+              text: '导出高质量女孩',
+              onClick: this.leadingOutGirls
             }
           ],
+        },
+        {
+          type: 'Button',
+          text: '黑名单',
+          disabled: true,
+          style: 'info',
+          onClick: this.blacklist
         }
       ],
       searchBarSet: [
@@ -121,8 +129,21 @@ export default {
     this.getData()
   },
   methods: {
-    added() {},
-    edit() {},
+    added() {
+      console.log('新增高质量人类名单')
+    },
+    blacklist() {
+      console.log('点击了黑名单')
+    },
+    leadingOutBoys() {
+      console.log('导出高质量男孩名单')
+    },
+    leadingOutGirls() {
+      console.log('导出高质量女孩名单')
+    },
+    goBack() {
+      console.log('点击了返回按钮')
+    },
     renderHeader(createElement, { column }) {
       return createElement('span', [
           createElement('span', ['姓名' + ' ']),

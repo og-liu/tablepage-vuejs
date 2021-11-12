@@ -605,6 +605,7 @@ export default {
 ## paginationSet 分页配置
 
 ## loading 加载动画
+## goBack 返回按钮
 
 - 类型: `Boolean`
 - 必传: `否`

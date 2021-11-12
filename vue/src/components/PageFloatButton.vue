@@ -51,7 +51,13 @@ export default {
         }
       }
       return h('el-button', {
-        props: {plain: true, size: 'small', type: data.style, icon: data.icon},
+        props: {
+          plain: true,
+          size: 'small',
+          type: data.style,
+          icon: data.icon,
+          disabled: data.disabled
+        },
         directives: [directive],
         on: {click: data.onClick}
       }, data.text)
@@ -87,7 +93,7 @@ export default {
     // 下拉菜单列表项
     renderDropdownItem(h, item) {
       return h('el-dropdown-item', {
-        nativeOn: {click: item.onClick}
+        nativeOn: {click: item.onClick},
       }, item.text)
     }
   }

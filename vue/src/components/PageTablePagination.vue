@@ -2,6 +2,7 @@
 <template>
   <div v-if="show" class="panel-footer" v-sticky  sticky-offset="offset" sticky-side="bottom">
     <div style="position: relative;" class="go-back">
+      <el-button style="margin-left: 15px;" v-if="backButton" size="medium" @click="goBack">返回</el-button>
       <div class="pages">
         <el-pagination
           @size-change="sizeChange"
@@ -59,7 +60,16 @@ export default {
       deep: true
     }
   },
+  props: {
+    backButton: {
+      type: Boolean,
+      default: false
+    }
+  },
   methods: {
+    goBack() {
+      this.$emit('goBack')
+    },
     sizeChange(size) {
       this.$emit('sizeChange', size)
     },
@@ -69,3 +79,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.go-back {
+  display: flex;
+  align-items: center;
+}
+
+.go-back .pages {
+  margin-top: 0;
+}
+</style>

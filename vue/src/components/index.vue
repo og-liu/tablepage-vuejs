@@ -18,7 +18,12 @@
       <search-bar @onSearch="onSearch"></search-bar>
       <table-layout :tableData="tableData" :loading="loading"></table-layout>
     </div>
-    <table-pagination @sizeChange="sizeChange" @currentChange="currentChange"></table-pagination>
+    <table-pagination
+      @sizeChange="sizeChange"
+      @currentChange="currentChange"
+      :backButton="backButton"
+      @goBack="goBack">
+    </table-pagination>
   </div>
 </template>
 
@@ -62,11 +67,18 @@ export default {
     tableData: {
       type: Array,
       required: true
+    },
+    backButton: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     onSearch(obj) {
       this.$emit('onSearch', obj)
+    },
+    goBack(size) {
+      this.$emit('goBack', size)
     },
     sizeChange(size) {
       this.$emit('sizeChange', size)
