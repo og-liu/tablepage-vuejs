@@ -13,17 +13,17 @@
                   :content="button.content"
                   placement="top">
                   <span class="circle">
-                    <el-button v-if="button.svgIcon"
+                    <el-button v-if="button.svg"
                       style="width: 30px; height: 30px; position: relative;"
                       v-on:click.stop="callbackEvent(button, scope.row, scope.$index)"
                       :type="button.type" size="mini" circle>
                       <vue-svg
-                        :name="button.svgIcon.name"
-                        :path="button.svgIcon.path || ''"
-                        :width="button.svgIcon.width || '16'"
-                        :height="button.svgIcon.height || '16'"
-                        :color="button.svgIcon.color || ''"
-                        :multipleColor="button.svgIcon.multipleColor || false"
+                        :name="button.svg.name"
+                        :path="button.svg.path || ''"
+                        :width="button.svg.width || '16'"
+                        :height="button.svg.height || '16'"
+                        :color="button.svg.color || ''"
+                        :multipleColor="button.svg.multipleColor || false"
                         style="position: absolute; top: 6px; left: 6px;">
                       </vue-svg>
                     </el-button>
@@ -109,8 +109,7 @@ export default {
               label: item.label,
               align: item.align || 'center',
               fixed: 'right',
-              // maximum 为最多可共存的按钮个数
-              width: (item.maximum || item.handleButton.length) * 38 + 22
+              width: item.handleButton.length * 38 + 22
             }
           }, [this.$scopedSlots.default])
         } else {

@@ -116,6 +116,8 @@ export default {
     @currentChange="currentChange"
     @sizeChange="sizeChange"
     @onSearch="onSearch"
+    backButton
+    @goBack="goBack"
     :loading="loading">
   </table-page>
 </template>
@@ -132,6 +134,35 @@ export default {
   },
   provide() {
     return {
+      floatButtonSet: [
+        {
+          type: 'Button',
+          text: '新增高质量人类',
+          style: 'primary',
+          onClick: this.added
+        },
+        {
+          type: 'Dropdown',
+          text: '导出数据',
+          list: [
+            {
+              text: '导出高质量男孩',
+              onClick: this.leadingOutBoys
+            },
+            {
+              text: '导出高质量女孩',
+              onClick: this.leadingOutGirls
+            }
+          ],
+        },
+        {
+          type: 'Button',
+          text: '黑名单',
+          disabled: true,
+          style: 'info',
+          onClick: this.blacklist
+        }
+      ],
       searchBarSet: [
         {
           type: 'select',
@@ -193,7 +224,28 @@ export default {
         },
         {
           prop: 'address',
+          minWidth: 200,
           label: '联系地址'
+        },
+        {
+          label: '操作',
+          renderType: 'button',
+          handleButton: [
+            {
+              content: '编辑',
+              icon: 'el-icon-edit',
+              type: 'primary',
+              event: 'doEdit',
+              // 如果当前行的 name 值不为大山，则显示按钮
+              isShow: (item) => item.name !== '大山'
+            },
+            {
+              content: '删除',
+              icon: 'el-icon-delete',
+              type: 'danger',
+              event: 'doDel'
+            }
+          ]
         }
       ],
       paginationSet: () => this.pagination
@@ -235,6 +287,27 @@ export default {
     sizeChange(size) {
       this.pagination.size = size
       this.getData(1, size, this.search)
+    },
+    goBack() {
+      console.log('点击了返回按钮')
+    },
+    doEdit(row, index) {
+      console.log('点击了编辑按钮')
+    },
+    doDel(row, index) {
+      console.log('点击了删除按钮')
+    },
+    added() {
+      console.log('新增高质量人类名单')
+    },
+    blacklist() {
+      console.log('点击了黑名单')
+    },
+    leadingOutBoys() {
+      console.log('导出高质量男孩名单')
+    },
+    leadingOutGirls() {
+      console.log('导出高质量女孩名单')
     }
   }
 }
@@ -681,13 +754,321 @@ export default {
 ```
 
 ### handleButton 操作按钮集合
+在表格末尾一列可以设置 `操作按钮集合` 列，首先需要把 `renderType` 的值设置为 `button`，然后它将接收一个 `handleButton` 字段，它是一个对象数组，数组内每一个对象代表着一个按钮的配置，为了方便理解，下面我讲以 `handleButtonItem` 来表示这个对象，当然它的顺序也对应着页面上渲染的顺序，与 `tableColumns` 一样，`handleButton` 只是一个容器，按钮的具体配置都落实在它的子元素 `handleButtonItem` 上。
+
 ### handleButtonItem 操作按钮配置
-#### icon 图标名称
+
+> 这里的 `handleButtonItem` 并非真的有这个属性，而是代指 `handleButton` 的每个子元素，表示的是每一个操作按钮的配置信息。
+
 #### content 提示文本
+
+按钮提示文本，鼠标滑动到按钮上浮现的提示文字
+
+- 类型: `String`
+- 必传: `是`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name',
+              minWidth: 200
+            },
+            {
+              label: '操作',
+              renderType: 'button',
+              handleButton: [
+                {
+                  content: '编辑'
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
+#### icon 图标名称
+
+字体图标名称， `Element UI` 图标。
+
+- 类型: `String`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name',
+              minWidth: 200
+            },
+            {
+              label: '操作',
+              renderType: 'button',
+              handleButton: [
+                {
+                  content: '编辑',
+                  icon: 'el-icon-edit'
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
+#### svg 图标配置 (推荐使用)
+
+svg 图标配置，它与 `icon` 二选一即可，基于插件 `svg-vuejs`, 它接收一个对象，对象内部接收所有插件提供的参数，详情参考文档: https://svg.ogliu.com
+
+- 类型: `Object`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name',
+              minWidth: 200
+            },
+            {
+              label: '操作',
+              renderType: 'button',
+              handleButton: [
+                {
+                  content: '编辑',
+                  svg: {
+                    name: 'edit',
+                    width: '16',
+                    height: '16',
+                    color: '#FFF'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
 #### type 风格
+
+按钮的颜色风格, 沿用 `Element ui` 按钮风格。
+
+- 类型: `String`
+- 必传: `否`
+- 可选值: `primary`, `success`, `info`, `warning`, `danger`, 不传参数则为黑白按钮。
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name',
+              minWidth: 200
+            },
+            {
+              label: '操作',
+              renderType: 'button',
+              handleButton: [
+                {
+                  content: '编辑',
+                  icon: 'el-icon-edit',
+                  type: 'primary'
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
 #### event 回调函数
+
+点击按钮触发的回调函数，需要注意的是这里接收的是回调函数的函数名，而并非函数体，对应的回调函数应该写在 `methods` 中，它有两个预设参数 `row`、`index` 可以获取当前行的数据和索引
+
+- 类型: `String`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name',
+              minWidth: 200
+            },
+            {
+              label: '操作',
+              renderType: 'button',
+              handleButton: [
+                {
+                  content: '编辑',
+                  icon: 'el-icon-edit',
+                  type: 'primary',
+                  event: 'doEdit'
+                }
+              ]
+            }
+          ]
+        }
+      },
+      methods: {
+        doEdit(row, index) {
+          console.log('点击了编辑按钮')
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
 #### isShow 是否显示
 
+当前按钮是否显示，可用于做权限限制，这里接收返回值为 `Boolean` 布尔值的回调函数, 你可以通过回调函数预设的参数 `item` 获取 `当前行数据`。
+
+- 类型: `function`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name',
+              minWidth: 200
+            },
+            {
+              label: '操作',
+              renderType: 'button',
+              handleButton: [
+                {
+                  content: '编辑',
+                  icon: 'el-icon-edit',
+                  type: 'primary',
+                  event: 'doEdit',
+                  // 如果当前行的 name 值为大山，则显示按钮
+                  isShow: (item) => item.name === '大山'
+                }
+              ]
+            }
+          ]
+        }
+      },
+      methods: {
+        doEdit(row, index) {
+          console.log('点击了编辑按钮')
+        }
+      }
+    }
+  }
+}
+</script>
+```
 
 ## floatButtonSet 浮动按钮
 

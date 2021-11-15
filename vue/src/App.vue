@@ -129,6 +129,32 @@ export default {
           prop: 'address',
           width: 300,
           label: '联系地址'
+        },
+        {
+          label: '操作',
+          renderType: 'button',
+          handleButton: [
+            {
+              content: '编辑',
+              svg: {
+                name: 'edit',
+                width: '16',
+                height: '16',
+                color: '#FFF'
+              },
+              icon: 'el-icon-edit',
+              type: 'primary',
+              event: 'doEdit',
+              // 如果当前行的 name 值不为大山，则显示按钮
+              isShow: (item) => item.name !== '大山'
+            },
+            {
+              content: '删除',
+              icon: 'el-icon-delete',
+              type: 'danger',
+              event: 'doDel'
+            }
+          ]
         }
       ],
       paginationSet: () => this.pagination
@@ -139,6 +165,14 @@ export default {
     this.getData()
   },
   methods: {
+    doEdit(row) {
+      console.log(row)
+      console.log('点击了编辑按钮')
+    },
+    doDel(row) {
+      console.log(row)
+      console.log('点击了删除按钮')
+    },
     added() {
       console.log('新增高质量人类名单')
     },
