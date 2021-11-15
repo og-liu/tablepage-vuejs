@@ -3,12 +3,15 @@
     title="高质量人类"
     subtitle="让天下没有难找的对象"
     :tableData="tableData"
-    backButton
     @currentChange="currentChange"
     @sizeChange="sizeChange"
+    backButton
     @goBack="goBack"
     @onSearch="onSearch"
     :loading="loading">
+    <template slot="names" slot-scope="scope">
+      <div style="color: #409eff">{{scope.row.name}}</div>
+    </template>
   </table-page>
 </template>
 
@@ -89,11 +92,17 @@ export default {
       ],
       tableColumns: [
         {
+          renderType: 'slot',
+          slot: 'names',
+          label: '姓名'
+        },
+        {
           prop: 'name',
           renderHeader: this.renderHeader
         },
         {
           prop: 'birthday',
+          minWidth: 100,
           label: '出生日期',
         },
         {
@@ -118,6 +127,7 @@ export default {
         },
         {
           prop: 'address',
+          width: 300,
           label: '联系地址'
         }
       ],
@@ -169,6 +179,7 @@ export default {
         params: { page, pageSize, ...search }
       }).then(response => {
         this.tableData = response.data.data
+        console.log(this.tableData)
         this.pagination = {
           size: pageSize,
           total: response.data.meta.pagination.total,

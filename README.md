@@ -585,11 +585,101 @@ export default {
 </script>
 ```
 
-
 ### minWidth 列最小宽度
-### maxWidth 列最大宽度
-### type 列类型
+
+对应列的最小宽度，可以传数值类型或者字符串类型的数字，带单位（px）也能识别，推荐传数值就好。
+
+- 类型: `String || Number`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name',
+              minWidth: 200
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
 ### slot 列插槽
+
+在某些时候，我们预设的表格列不满足需求，就需要使用到插槽来实现自定义列, 在接收 `slot` 字段之前，务必先将 `renderType` 的值设置为 `slot`
+
+- 类型: `String || Number`
+- 必传: `否`
+
+使用步骤: 
+1. 确认需要插入列的位置，例如需要在第 2 列使用自定义列，那么就需要在 `tableColumns` 的第 2 个子元素配置插槽。
+2. 设置 `renderType` 的值为 `slot`。
+3. 设置 `slot` 对应的名称，它将与 `template` 的 `slot` 字段对应。
+4. 在组件体内开启 `template`，设置模板名称。
+5. 编写自定义内容。
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData">
+    <!-- 4. 在组件体内开启 template，注意它的 slot 属性值，必须与第上一步设置的名称一致 -->
+    <template slot="sex" slot-scope="scope">
+      <!-- 5. 编写自定义的内容 -->
+      <div style="color: #409eff">{{scope.row.name}}</div>
+    </template>
+  </table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumns: [
+            {
+              label: '姓名',
+              prop: 'name',
+              minWidth: 200
+            },
+            {
+              // 1. 确认位置，在此处开启插槽列的配置
+              label: '性别',
+              renderType: 'slot', // 2. 设置 renderType 的值为 slot, 告诉组件要以插槽的模式来渲染
+              slot: 'sex', // 3. 设置当前插槽列对应的模板名称
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
 ### handleButton 操作按钮集合
 ### handleButtonItem 操作按钮配置
 #### icon 图标名称
@@ -604,8 +694,12 @@ export default {
 ## searchBarSet 搜索栏
 ## paginationSet 分页配置
 
+
+
+
 ## loading 加载动画
-## goBack 返回按钮
+
+表格数据加载动画
 
 - 类型: `Boolean`
 - 必传: `否`
@@ -617,10 +711,8 @@ export default {
 </template>
 
 <script type="text/ecmascript-6">
-import tablePage from '@/components/TablePage'
 
 export default {
-  components: { tablePage },
   data() {
     return {
       tableData: [],
@@ -631,12 +723,27 @@ export default {
 </script>
 ```
 
-```html run
+## backButton 返回按钮
+
+表格底部返回上一页按钮，它会暴露一个回调事件 `goBack`，需结合使用。
+
+- 类型: `Boolean`
+- 必传: `否`
+
+##### 用法
+```vue
 <template>
-  <table-page title="产品列表" :tableData="tableData" :loading="loading"></table-page>
+  <table-page 
+    title="产品列表"
+    :tableData="tableData"
+    :loading="loading"
+    backButton
+    @goBack="goBack">
+  </table-page>
 </template>
 
 <script type="text/ecmascript-6">
+
 export default {
   data() {
     return {
@@ -644,59 +751,15 @@ export default {
       loading: false
     }
   },
-  provide() {
-    return {
-      tableColumns: [
-        {
-          prop: 'name',
-          label: '姓名'
-        },
-        {
-          prop: 'birthday',
-          label: '出生日期',
-        },
-        {
-          prop: 'sex',
-          label: '性别',
-        },
-        {
-          prop: 'phone',
-          label: '联系电话'
-        },
-        {
-          prop: 'hobbies',
-          label: '爱好'
-        },
-        {
-          prop: 'education',
-          label: '学历'
-        },
-        {
-          prop: 'occupation',
-          label: '职业'
-        },
-        {
-          prop: 'address',
-          label: '联系地址'
-        }
-      ]
-    }
-  },
-  created() {
-    this.getData()
-  },
   methods: {
-    getData() {
-      axios.get('https://mock.ogliu.com/mock/618484ed957ff105d1b54bad/api/list').then(response => {
-        this.tableData = response.data.data
-      }).catch(function (error) {
-        console.log(error)
-      })
+    goBack() {
+      console.log('点击了返回按钮')
     }
   }
 }
 </script>
 ```
+
 
 # 更新预告
 > 持续开发、更新、优化，暂时计划要实现的功能如下:
