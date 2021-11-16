@@ -9,6 +9,18 @@
     @goBack="goBack"
     @onSearch="onSearch"
     :loading="loading">
+    <template slot="clear">
+      <el-dropdown split-button type="primary" size="small">
+        更多名单
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>凶猛的小萝莉</el-dropdown-item>
+          <el-dropdown-item>沧伤的小正太</el-dropdown-item>
+          <el-dropdown-item>娇萌的怪叔叔</el-dropdown-item>
+          <el-dropdown-item>恐怖的御姐姐</el-dropdown-item>
+          <el-dropdown-item>性感的老阿姨</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </template>
     <template slot="names" slot-scope="scope">
       <div style="color: #409eff">{{scope.row.name}}</div>
     </template>
@@ -33,13 +45,17 @@ export default {
     return {
       floatButtonSet: [
         {
-          type: 'Button',
+          type: 'button',
           text: '新增高质量人类',
           style: 'primary',
           onClick: this.added
         },
         {
-          type: 'Dropdown',
+          type: 'slot',
+          slot: 'clear'
+        },
+        {
+          type: 'dropdown',
           text: '导出数据',
           list: [
             {
@@ -53,7 +69,7 @@ export default {
           ],
         },
         {
-          type: 'Button',
+          type: 'button',
           text: '黑名单',
           disabled: true,
           style: 'info',
@@ -213,7 +229,6 @@ export default {
         params: { page, pageSize, ...search }
       }).then(response => {
         this.tableData = response.data.data
-        console.log(this.tableData)
         this.pagination = {
           size: pageSize,
           total: response.data.meta.pagination.total,

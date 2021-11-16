@@ -23,15 +23,16 @@ export default {
   components: {
     // 渲染单个按钮
     buttonList: {
-      functional: true,
       props: ['data'],
-      render: function (h, context) {
-        const type = context.props.data.type
-        switch (type) {
-          case 'Button':
-            return context.parent.renderButton(h, context)
-          case 'Dropdown':
-            return context.parent.renderDropdown(h, context)
+      render: function (h) {
+        const data = this.data
+        switch (data.type) {
+          case 'button':
+            return this.$parent.renderButton(h, data)
+          case 'dropdown':
+            return this.$parent.renderDropdown(h, data)
+          case 'slot':
+            return this.$parent.renderSlot(h, data)
           default:
             console.error(new Error('按钮类型异常, 请检查是否正确传入 type 参数！'))
             break
@@ -40,9 +41,18 @@ export default {
     }
   },
   methods: {
+    // 自定义按钮
+    renderSlot(h, data) {
+      return h('div', {
+        style: {
+          marginLeft: '10px'
+        },
+        scopedSlots: data.slot,
+        slot: data.slot
+      }, [this.$parent.$scopedSlots[data.slot]()])
+    },
     // 普通按钮
-    renderButton(h, context) {
-      const data = context.props.data
+    renderButton(h, data) {
       let directive = {}
       if (this.$root.$options.directives.permission) {
         directive = {
@@ -58,25 +68,30 @@ export default {
           icon: data.icon,
           disabled: data.disabled
         },
+        style: {
+          marginLeft: '10px'
+        },
         directives: [directive],
         on: {click: data.onClick}
       }, data.text)
     },
     // 下拉菜单按钮
-    renderDropdown(h, context) {
+    renderDropdown(h, data) {
       return h('el-dropdown', {}, [
-        this.renderDropdownButton(h, context),
-        this.renderDropdownList(h, context)
+        this.renderDropdownButton(h, data),
+        this.renderDropdownList(h, data)
       ])
     },
     // 下拉菜单按钮
-    renderDropdownButton(h, context) {
-      const data = context.props.data
+    renderDropdownButton(h, data) {
       return h('el-button', {
         props: {
           plain: true,
           size: 'small',
           type: data.style
+        },
+        style: {
+          marginLeft: '10px'
         }
       }, [
         data.text,
@@ -84,8 +99,8 @@ export default {
       ])
     },
     // 下拉菜单列表
-    renderDropdownList(h, context) {
-      let list = context.props.data.list
+    renderDropdownList(h, data) {
+      let list = data.list
       let children = []
       list.map(item => children.push(this.renderDropdownItem(h, item)))
       return h('el-dropdown-menu', {attrs: {slot: 'dropdown'}}, children)
@@ -101,7 +116,5 @@ export default {
 </script>
 
 <style>
-#FloatButton .el-button {
-  margin-left: 10px;
-}
+#FloatButton { display: flex; }
 </style>

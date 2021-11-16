@@ -9,12 +9,10 @@
         </div>
         <div class="float-btn">
           <float-button></float-button>
-          <slot name="titleRight"></slot>
         </div>
       </div>
     </div>
     <div class="panel-body">
-      <slot></slot>
       <search-bar @onSearch="onSearch"></search-bar>
       <table-layout :tableData="tableData" :loading="loading"></table-layout>
     </div>

@@ -196,7 +196,7 @@ export default {
       tableColumns: [
         {
           prop: 'name',
-          label: '姓名'
+          renderHeader: this.renderHeader
         },
         {
           prop: 'birthday',
@@ -256,6 +256,25 @@ export default {
     this.getData()
   },
   methods: {
+    // 自定义表头
+    renderHeader(createElement, { column }) {
+      return createElement('span', [
+          createElement('span', ['姓名' + ' ']),
+          createElement('el-popover', {
+            props: {
+              placement: 'top',
+              trigger: 'hover',
+              popperClass: 'titshowTip'
+            }}, [createElement('span',
+            ['数据来源于 Easy Mock']),
+            createElement('span', {
+              slot: 'reference',
+              'class': { 'el-icon-question': true }
+            })
+          ])
+        ]
+      )
+    },
     // 请求接口获取列表数据
     getData(page = 1, pageSize = 10, search = {}) {
       this.loading = true
@@ -1071,6 +1090,8 @@ export default {
 ```
 
 ## floatButtonSet 浮动按钮
+
+> 浮动在页面标题右侧的操作按钮，暂时可以配置 `普通按钮` 和 `下拉菜单按钮`，如果不满足需求，可利用插槽自定义按钮。
 
 ## searchBarSet 搜索栏
 ## paginationSet 分页配置
