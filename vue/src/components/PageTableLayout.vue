@@ -98,7 +98,8 @@ export default {
               align: item.align || 'center',
               width: item.width,
               minWidth: item.minWidth,
-              showOverflowTooltip: true
+              showOverflowTooltip: true,
+              renderHeader: item.renderHeader
             },
             scopedSlots: item.slot,
             slot: item.slot
@@ -109,7 +110,8 @@ export default {
               label: item.label,
               align: item.align || 'center',
               fixed: 'right',
-              width: item.handleButton.length * 38 + 22
+              width: item.handleButton.length * 38 + 22,
+              renderHeader: item.renderHeader
             }
           }, [this.$scopedSlots.default])
         } else {
