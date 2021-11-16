@@ -47,7 +47,7 @@
 export default {
   inject: {
     tableColumns: {
-      from: 'tableColumns',
+      from: 'tableColumnSet',
       default: () => []
     }
   },
@@ -72,7 +72,7 @@ export default {
     tableColumns: {
       handler (val) {
         val.map(i => {
-          if(i.renderType === 'button') this.handleButton = i.handleButton
+          if(i.renderType === 'button') this.handleButton = i.handleButtonSet
         })
       },
       immediate: true,
@@ -110,7 +110,7 @@ export default {
               label: item.label,
               align: item.align || 'center',
               fixed: 'right',
-              width: item.handleButton.length * 38 + 22,
+              width: item.handleButtonSet.length * 38 + 22,
               renderHeader: item.renderHeader
             }
           }, [this.$scopedSlots.default])

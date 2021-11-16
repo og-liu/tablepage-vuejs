@@ -38,7 +38,7 @@ new Vue({
 
 ## 在页面中使用
 
-> 这是最基本的使用，至少得传入 `title`、`tableData` 以及 `tableColumns`，分别表示 `页面标题`、`数据源` 和 `每一列的配置信息`
+> 这是最基本的使用，至少得传入 `title`、`tableData` 以及 `tableColumnSet`，分别表示 `页面标题`、`数据源` 和 `每一列的配置信息`
 
 ```html run { title: '基础版' }
 <template>
@@ -49,7 +49,7 @@ new Vue({
 export default {
   provide() {
     return {
-      tableColumns: [
+      tableColumnSet: [
         {
           prop: 'name',
           label: '姓名'
@@ -212,7 +212,7 @@ export default {
           placeholder: '请输入姓名'
         }
       ],
-      tableColumns: [
+      tableColumnSet: [
         {
           renderType: 'slot',
           slot: 'names',
@@ -250,7 +250,7 @@ export default {
         {
           label: '操作',
           renderType: 'button',
-          handleButton: [
+          handleButtonSet: [
             {
               content: '编辑',
               icon: 'el-icon-edit',
@@ -385,7 +385,7 @@ export default {
 ```
 
 ## tableData 表格数据源
-> 通过 `接口` 从后端获取的数据源，用于表格展示的数据，和 `tableColumns` 搭配使用
+> 通过 `接口` 从后端获取的数据源，用于表格展示的数据，和 `tableColumnSet` 搭配使用
 
 - 传入方式: `Prop`
 - 类型: `Array`，`对象数组`，每个元素都应该是一个对象，而每个对象表示每行数据
@@ -419,8 +419,8 @@ export default {
 </script>
 ```
 
-## tableColumns 表格列集合
-> 通过注入的方式对表格每列数据做配置，`tableColumns` 只是一个容器，用于存放所有的 `列` 的配置信息
+## tableColumnSet 表格列集合
+> 通过注入的方式对表格每列数据做配置，`tableColumnSet` 只是一个容器，用于存放所有的 `列` 的配置信息
 
 - 传入方式: `Provide`
 - 类型: `Array`，`对象数组`，每个元素都应该是一个对象，而每个对象表示每列数据的配置信息
@@ -428,7 +428,7 @@ export default {
 
 ```html run { title: '基本用法' }
 <template>
-  <table-page title="产品列表" :tableData="tableData"></table-page>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
 </template>
 
 <script type="text/ecmascript-6">
@@ -451,7 +451,7 @@ export default {
   },
   provide() {
     return {
-      tableColumns: [
+      tableColumnSet: [
         {
           prop: 'name',
           label: '姓名'
@@ -491,8 +491,8 @@ export default {
 </script>
 ```
 
-## tableColumnsItem 表格列配置
-> 这里的 `tableColumnsItem` 并非真的有这个属性，而是代指 `tableColumns` 的每个子元素、表示的是每一列的具体配置信息，这里的每个子元素之间的顺序在页面上展示的顺序对应，例如: 我希望在第 3 列展示 `性别`，那么就将 `性别` 相关的配置放在第 3 个子元素位置。
+## tableColumn 表格列配置
+> 这里的 `tableColumn` 并非真的有这个属性，而是代指 `tableColumnSet` 的每个子元素、表示的是每一列的具体配置信息，这里的每个子元素之间的顺序在页面上展示的顺序对应，例如: 我希望在第 3 列展示 `性别`，那么就将 `性别` 相关的配置放在第 3 个子元素位置。
 
 ### renderType 列类型
 
@@ -514,7 +514,7 @@ export default {
       tableData: [],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name'
@@ -553,7 +553,7 @@ export default {
       tableData: [],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名'
             }
@@ -589,7 +589,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               prop: 'name',
               renderHeader: this.renderHeader
@@ -645,7 +645,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name'
@@ -682,7 +682,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name',
@@ -720,7 +720,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name',
@@ -743,7 +743,7 @@ export default {
 - 必传: `否`
 
 使用步骤: 
-1. 确认需要插入列的位置，例如需要在第 2 列使用自定义列，那么就需要在 `tableColumns` 的第 2 个子元素配置插槽。
+1. 确认需要插入列的位置，例如需要在第 2 列使用自定义列，那么就需要在 `tableColumnSet` 的第 2 个子元素配置插槽。
 2. 设置 `renderType` 的值为 `slot`。
 3. 设置 `slot` 对应的名称，它将与 `template` 的 `slot` 字段对应。
 4. 在组件体内开启 `template`，设置模板名称。
@@ -771,7 +771,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name',
@@ -792,12 +792,12 @@ export default {
 </script>
 ```
 
-### handleButton 操作按钮集合
-在表格末尾一列可以设置 `操作按钮集合` 列，首先需要把 `renderType` 的值设置为 `button`，然后它将接收一个 `handleButton` 字段，它是一个对象数组，数组内每一个对象代表着一个按钮的配置，为了方便理解，下面我讲以 `handleButtonItem` 来表示这个对象，当然它的顺序也对应着页面上渲染的顺序，与 `tableColumns` 一样，`handleButton` 只是一个容器，按钮的具体配置都落实在它的子元素 `handleButtonItem` 上。
+### handleButtonSet 操作按钮集合
+在表格末尾一列可以设置 `操作按钮集合` 列，首先需要把 `renderType` 的值设置为 `button`，然后它将接收一个 `handleButtonSet` 字段，它是一个对象数组，数组内每一个对象代表着一个按钮的配置，为了方便理解，下面我讲以 `handleButton` 来表示这个对象，当然它的顺序也对应着页面上渲染的顺序，与 `tableColumnSet` 一样，`handleButtonSet` 只是一个容器，按钮的具体配置都落实在它的子元素 `handleButton` 上。
 
-### handleButtonItem 操作按钮配置
+### handleButton 操作按钮配置
 
-> 这里的 `handleButtonItem` 并非真的有这个属性，而是代指 `handleButton` 的每个子元素，表示的是每一个操作按钮的配置信息。
+> 这里的 `handleButton` 并非真的有这个属性，而是代指 `handleButtonSet` 的每个子元素，表示的是每一个操作按钮的配置信息。
 
 #### content 提示文本
 
@@ -822,7 +822,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name',
@@ -831,7 +831,7 @@ export default {
             {
               label: '操作',
               renderType: 'button',
-              handleButton: [
+              handleButtonSet: [
                 {
                   content: '编辑'
                 }
@@ -869,7 +869,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name',
@@ -878,7 +878,7 @@ export default {
             {
               label: '操作',
               renderType: 'button',
-              handleButton: [
+              handleButtonSet: [
                 {
                   content: '编辑',
                   icon: 'el-icon-edit'
@@ -917,7 +917,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name',
@@ -926,7 +926,7 @@ export default {
             {
               label: '操作',
               renderType: 'button',
-              handleButton: [
+              handleButtonSet: [
                 {
                   content: '编辑',
                   svg: {
@@ -971,7 +971,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name',
@@ -980,7 +980,7 @@ export default {
             {
               label: '操作',
               renderType: 'button',
-              handleButton: [
+              handleButtonSet: [
                 {
                   content: '编辑',
                   icon: 'el-icon-edit',
@@ -1020,7 +1020,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name',
@@ -1029,7 +1029,7 @@ export default {
             {
               label: '操作',
               renderType: 'button',
-              handleButton: [
+              handleButtonSet: [
                 {
                   content: '编辑',
                   icon: 'el-icon-edit',
@@ -1075,7 +1075,7 @@ export default {
       ],
       provide() {
         return {
-          tableColumns: [
+          tableColumnSet: [
             {
               label: '姓名',
               prop: 'name',
@@ -1084,7 +1084,7 @@ export default {
             {
               label: '操作',
               renderType: 'button',
-              handleButton: [
+              handleButtonSet: [
                 {
                   content: '编辑',
                   icon: 'el-icon-edit',
@@ -1113,6 +1113,79 @@ export default {
 
 > 浮动在页面标题右侧的操作按钮，暂时可以配置 `普通按钮` 和 `下拉菜单按钮`，如果不满足需求，可利用插槽自定义按钮。
 
+- 传入方式: `Provide`
+- 类型: `Array`, `对象数组`，每个元素都应该是一个对象，而每个对象表示每个 `浮动按钮` 的配置信息
+- 必传: '否'
+
+```html run { title: '基本用法' }
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: []
+    }
+  },
+  provide() {
+    return {
+      floatButtonSet: [
+        {
+          type: 'button',
+          text: '新增高质量人类',
+          style: 'primary',
+          onClick: this.added
+        }
+      ],
+      tableColumnSet: [
+        {
+          prop: 'name',
+          label: '姓名'
+        },
+        {
+          prop: 'birthday',
+          label: '出生日期',
+        },
+        {
+          prop: 'sex',
+          label: '性别',
+        },
+        {
+          prop: 'phone',
+          label: '联系电话'
+        },
+        {
+          prop: 'hobbies',
+          label: '爱好'
+        },
+        {
+          prop: 'education',
+          label: '学历'
+        },
+        {
+          prop: 'occupation',
+          label: '职业'
+        },
+        {
+          prop: 'address',
+          label: '联系地址'
+        }
+      ]
+    }
+  },
+  methods: {
+    added() {
+      console.log('点击了新增高质量人类')
+    }
+  }
+}
+</script>
+```
+
+
+
 ## searchBarSet 搜索栏
 ## paginationSet 分页配置
 
@@ -1129,7 +1202,7 @@ export default {
 ##### 用法
 ```vue
 <template>
-  <table-page title="产品列表" :tableData="tableData" :loading="loading"></table-page>
+  <table-page title="高质量人类" :tableData="tableData" :loading="loading"></table-page>
 </template>
 
 <script type="text/ecmascript-6">
@@ -1156,7 +1229,7 @@ export default {
 ```vue
 <template>
   <table-page 
-    title="产品列表"
+    title="高质量人类"
     :tableData="tableData"
     :loading="loading"
     backButton

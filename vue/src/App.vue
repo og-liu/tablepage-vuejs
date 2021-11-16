@@ -106,7 +106,7 @@ export default {
           placeholder: '请输入姓名'
         }
       ],
-      tableColumns: [
+      tableColumnSet: [
         {
           renderType: 'slot',
           slot: 'names',
@@ -149,7 +149,7 @@ export default {
         {
           label: '操作',
           renderType: 'button',
-          handleButton: [
+          handleButtonSet: [
             {
               content: '编辑',
               svg: {
