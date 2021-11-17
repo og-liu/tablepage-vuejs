@@ -153,15 +153,15 @@ export default {
         {
           renderType: 'button',
           text: '新增高质量人类',
-          style: 'primary',
+          type: 'primary',
           onClick: this.added
         },
         {
-          type: 'slot',
+          renderType: 'slot',
           slot: 'clear'
         },
         {
-          type: 'dropdown',
+          renderType: 'dropdown',
           text: '导出数据',
           list: [
             {
@@ -175,10 +175,10 @@ export default {
           ],
         },
         {
-          type: 'button',
+          renderType: 'button',
           text: '黑名单',
           disabled: true,
-          style: 'info',
+          type: 'info',
           onClick: this.blacklist
         }
       ],
@@ -1135,7 +1135,7 @@ export default {
         {
           renderType: 'button',
           text: '新增高质量人类',
-          style: 'primary',
+          type: 'primary',
           onClick: this.added
         }
       ],
