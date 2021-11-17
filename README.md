@@ -105,7 +105,7 @@ export default {
 </script>
 ```
 
-> 通过传入更多属性以展示一个功能丰富的表格页面
+> 通过传入更多属性以展示一个功能丰富的表格页面，数据来源 Easy Mock 参考文档: https://mock.ogliu.com
 
 ```html run { title: '综合实例' }
 <template>
@@ -116,9 +116,13 @@ export default {
     @currentChange="currentChange"
     @sizeChange="sizeChange"
     @onSearch="onSearch"
+    @onClear="onClear"
     backButton
     @goBack="goBack"
     :loading="loading">
+    <template slot="birthday" slot-scope="scope">
+      <el-date-picker size="small" v-model="birthday" type="date" placeholder="选择日期"></el-date-picker>
+    </template>
     <template slot="clear">
       <el-dropdown split-button type="primary" size="small">
         更多名单
@@ -141,6 +145,7 @@ export default {
 export default {
   data(){
     return {
+      birthday: '',
       tableData: [],
       pagination: {},
       loading: false,
@@ -184,6 +189,18 @@ export default {
       ],
       searchBarSet: [
         {
+          renderType: 'input',
+          label: '姓名',
+          width: 240,
+          key: 'name',
+          placeholder: '请输入姓名'
+        },
+        {
+          renderType: 'slot',
+          label: '出生日期',
+          slot: 'birthday',
+        },
+        {
           renderType: 'select',
           label: '学历',
           placeholder: '请选择学历',
@@ -203,13 +220,6 @@ export default {
               label: '博士'
             }
           ]
-        },
-        {
-          renderType: 'input',
-          label: '姓名',
-          width: 240,
-          key: 'name',
-          placeholder: '请输入姓名'
         }
       ],
       tableColumnSet: [
@@ -317,6 +327,9 @@ export default {
     onSearch(search) {
       this.search = search
       this.getData(1, this.pagination.size, search)
+    },
+    onClear() {
+      this.birthday = ''
     },
     // 当前页码改变
     currentChange(page) {
@@ -793,7 +806,7 @@ export default {
 ```
 
 ### handleButtonSet 操作按钮集合
-在表格末尾一列可以设置 `操作按钮集合` 列，首先需要把 `renderType` 的值设置为 `button`，然后它将接收一个 `handleButtonSet` 字段，它是一个对象数组，数组内每一个对象代表着一个按钮的配置，为了方便理解，下面我讲以 `handleButton` 来表示这个对象，当然它的顺序也对应着页面上渲染的顺序，与 `tableColumnSet` 一样，`handleButtonSet` 只是一个容器，按钮的具体配置都落实在它的子元素 `handleButton` 上。
+在表格末尾一列可以设置 `操作按钮集合` 列，首先需要把 `renderType` 的值设置为 `button`，然后它将接收一个 `handleButtonSet` 字段，它是一个对象数组，数组内每一个对象代表着一个按钮的配置，为了方便理解，下面我将以 `handleButton` 来表示这个对象，当然它的顺序也对应着页面上渲染的顺序，与 `tableColumnSet` 一样，`handleButtonSet` 只是一个容器，按钮的具体配置都落实在它的子元素 `handleButton` 上，`操作按钮` 可以获取当前行的数据做对应的操作，整个操作列在页面宽度不够的时候会固定展示在右侧。
 
 ### handleButton 操作按钮配置
 
@@ -1691,7 +1704,7 @@ export default {
 
 ## searchBarSet 搜索栏（集合）
 
-> `searchBarSet` 提供搜索栏组件, 它将出现在表格上方， 它是一个容器，由一个或者多个 `搜索项` 组成， 如果内置的 `搜索控件` 不满足需求，可利用插槽自定义 `搜索项`。
+> 搜索栏提供各种 `类型` 控件的搜索项，包括 `普通文本框`、`下拉菜单` 等等，点击 `查询按钮` 将会暴露出 `查询事件`，具体代码需要自行编写，点击重置则清空搜索栏，它将出现在表格上方， 它是一个容器，由一个或者多个 `搜索项` 组成， 如果内置的 `搜索控件` 不满足需求，可利用插槽自定义 `搜索项`。
 
 - 传入方式: `Provide`
 - 类型: `Array`, `对象数组`，每个元素都应该是一个对象，而每个对象表示每个 `搜索项` 的配置信息
@@ -2207,63 +2220,3 @@ export default {
 
 - 搜索栏新增更多控件类型的搜索项
 - 浮动按钮新增更多控件类型的按钮项
-
-- 新增获取数据之前事件
-- 新增获取数据完成时事件
-- 新增获取数据失败时事件
-
-
-
-
-
-
-
-
-
-[comment]: <> (#### 搜索栏)
-
-[comment]: <> (搜索栏提供各种 `类型` 控件的搜索项，包括 `普通文本框`、`下拉菜单` 等等，点击 `查询按钮` 将会暴露出 `查询事件`，具体代码需要自行编写，点击重置则清空搜索栏。)
-
-[comment]: <> (#### 操作按钮)
-
-[comment]: <> (操作按钮可以获取当前行的数据做对应的操作，整个操作列在页面宽度不够的时候会固定展示在右侧，按钮细节均可单独配置。)
-
-[comment]: <> (![]&#40;https://cdn.jsdelivr.net/gh/og-liu/image-host/20211029171246.png&#41;)
-
-[comment]: <> (#### 批量操作)
-
-[comment]: <> (列头出现勾选功能，表头上方则会出现 `当前已选项目`、`操作项`，点击 `操作项` 则会暴露出对应的事件。)
-
-[comment]: <> (![]&#40;https://cdn.jsdelivr.net/gh/og-liu/image-host/20211029164606.png&#41;)
-
-[comment]: <> (#### 表格列筛选)
-
-[comment]: <> (启用表格筛选之后，末列表头旁边会出现 `筛选按钮`，点击按钮会展示当前所有列的表头，勾选则显示该列，去掉勾选则隐藏。)
-
-[comment]: <> (![]&#40;https://cdn.jsdelivr.net/gh/og-liu/image-host/20211029172224.png&#41;)
-
-[comment]: <> (浮动按钮改造成可以定位，分页改造成注入)
-
-
-[comment]: <> (#### 按钮位置)
-
-[comment]: <> (#### 普通按钮)
-
-[comment]: <> (#### 下拉菜单按钮)
-
-[comment]: <> (#### 普通文本框)
-
-[comment]: <> (#### 下拉菜单)
-
-[comment]: <> (## Event 事件)
-
-[comment]: <> (### onSearch 点击搜索)
-
-[comment]: <> (### currentChange 当前页码改变)
-
-[comment]: <> (### sizeChange 每页展示数量改变)
-
-[comment]: <> (### requested 获取数据成功时)
-
-[comment]: <> (### requestFailure 获取数据失败时)
-
