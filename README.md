@@ -3,14 +3,17 @@
 
 ## 安装
 
-##### npm 
+### NPM
+
 在终端命令行使用指令安装依赖，然后按照下一步骤引入、注册全局组件使用
+
 ```bash
 npm install tablepage-vuejs --save
 ```
 
-## 引入并启用
-> 在 main.js 引入， 如果项目中没有使用 Element UI，则也需要一并引入
+> 如果项目中没有使用 Element UI，则也需要一并引入
+
+#### main.js
 
 ```javascript
 // The Vue build version to load with the `import` command
@@ -36,6 +39,15 @@ new Vue({
 })
 ```
 
+### CDN
+
+目前可以通过 unpkg.com/tablepage-vuejs 获取到所有版本的资源，在页面上引入 js 文件即可开始使用。
+
+##### index.html
+
+```javascript
+<script src="https://unpkg.com/tablepage-vuejs@1.0.3/dist/table-page.min.js"></script>
+```
 ## 在页面中使用
 
 > 这是最基本的使用，至少得传入 `title`、`tableData` 以及 `tableColumnSet`，分别表示 `页面标题`、`数据源` 和 `每一列的配置信息`
