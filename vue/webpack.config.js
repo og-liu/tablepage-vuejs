@@ -8,7 +8,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    filename: 'table-page.js',
+    filename: 'table-page.min.js',
     library: 'table-page',
     libraryTarget: "umd",
     umdNamedDefine: true

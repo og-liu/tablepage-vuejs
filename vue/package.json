@@ -1,15 +1,16 @@
 {
   "name": "tablepage-vuejs",
   "description": "为了避免大批量的重复代码，将使用频率极高的表格列表页面封装成一个组件",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "author": "LiuKun <308880147@qq.com>",
   "license": "MIT",
   "private": false,
-  "main": "./dist/table-page.js",
+  "main": "./dist/table-page.min.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
+  "files": ["*"],
   "dependencies": {
     "axios": "^0.24.0",
     "css-loader": "^0.28.7",
