@@ -76,4 +76,4 @@ section.cover.has-mask .mask {opacity: 0.86;}
 [GitHub](https://github.com/docsifyjs/docsify/)
 [Get Started](#快速上手)
 
-![](./_media/vuejs-plugins-blog-banner-1024x351.jpg)
+![](https://cdn.jsdelivr.net/gh/og-liu/image-host/20211117155017.jpg)
