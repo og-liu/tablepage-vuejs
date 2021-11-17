@@ -163,7 +163,7 @@ export default {
         {
           renderType: 'dropdown',
           text: '导出数据',
-          list: [
+          menuSet: [
             {
               text: '导出高质量男孩',
               onClick: this.leadingOutBoys
