@@ -739,7 +739,7 @@ export default {
 
 在某些时候，我们预设的表格列不满足需求，就需要使用到插槽来实现自定义列, 在接收 `slot` 字段之前，务必先将 `renderType` 的值设置为 `slot`
 
-- 类型: `String || Number`
+- 类型: `String`
 - 必传: `否`
 
 使用步骤: 
@@ -1109,9 +1109,9 @@ export default {
 </script>
 ```
 
-## floatButtonSet 浮动按钮
+## floatButtonSet 浮动按钮集合
 
-> 浮动在页面标题右侧的操作按钮，暂时可以配置 `普通按钮` 和 `下拉菜单按钮`，如果不满足需求，可利用插槽自定义按钮。
+> 在头部右侧新增浮动按钮，可以配置不同的 `文本内容`，`类型`、`风格（颜色）`、`事件` 等等，暂时可以配置 `普通按钮` 和 `下拉菜单按钮`，如果不满足需求，可利用插槽自定义按钮。
 
 - 传入方式: `Provide`
 - 类型: `Array`, `对象数组`，每个元素都应该是一个对象，而每个对象表示每个 `浮动按钮` 的配置信息
@@ -1184,13 +1184,514 @@ export default {
 </script>
 ```
 
+## floatButton 浮动按钮配置
+
+> 这里的 `floatButton` 并非真的有这个属性，而是代指 `floatButtonSet` 的每个子元素、表示的是每一个 `浮动按钮` 的具体配置信息，这里的每个子元素之间的顺序在页面上展示的顺序对应。
+
+### renderType 浮动按钮类型
+
+目前表格列的类型分为三种: `普通按钮`、`下拉菜单按钮`、`自定义按钮`。
+
+- 类型: `String`
+- 必传: `是`
+- 可选值: `button (普通按钮)`、`dropdown（下拉菜单按钮）`、`slot（插槽、自定义列）`。
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          floatButtonSet: [
+            {
+              renderType: 'button'
+            },
+            {
+              renderType: 'slot'
+            },
+            {
+              renderType: 'dropdown'
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
+### text 按钮文本
+
+只作用于 `button （普通按钮）` 和 `dropdown （下拉菜单按钮）`
+
+- 类型: `String`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          floatButtonSet: [
+            {
+              renderType: 'button',
+              text: '新增高质量人类'
+            },
+            {
+              renderType: 'slot'
+            },
+            {
+              renderType: 'dropdown',
+              text: '导出数据'
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
+### type 风格
+
+按钮的颜色风格, 沿用 `Element ui` 按钮风格, 只作用于 `button （普通按钮）` 和 `dropdown （下拉菜单按钮）`。
+
+- 类型: `String`
+- 必传: `否`
+- 可选值: `primary`, `success`, `info`, `warning`, `danger`, 不传参数则为黑白按钮。
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          floatButtonSet: [
+            {
+              renderType: 'button',
+              text: '新增高质量人类',
+              type: 'primary'
+            },
+            {
+              renderType: 'slot'
+            },
+            {
+              renderType: 'dropdown',
+              text: '导出数据',
+              type: 'info'
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
+
+### onClick 按钮点击事件
+
+接收一个函数，在按钮点击时执行，作用于 `button (普通按钮)`。
+
+- 类型: `Function`
+- 必传: `是`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          floatButtonSet: [
+            {
+              renderType: 'button',
+              text: '新增高质量人类',
+              type: 'primary',
+              onClick: this.added
+            },
+            {
+              renderType: 'slot'
+            },
+            {
+              renderType: 'dropdown',
+              text: '导出数据',
+              type: 'info'
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    added() {
+      console.log('新增高质量人类名单')
+    }
+  }
+}
+</script>
+```
+
+### icon 图标名称
+
+字体图标名称， `Element UI` 图标, 只作用于 `button (普通按钮)`。
+
+- 类型: `String`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          floatButtonSet: [
+            {
+              renderType: 'button',
+              text: '新增高质量人类',
+              type: 'primary',
+              onClick: this.added,
+              icon: 'el-icon-edit'
+            },
+            {
+              renderType: 'slot'
+            },
+            {
+              renderType: 'dropdown',
+              text: '导出数据',
+              type: 'info'
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    added() {
+      console.log('新增高质量人类名单')
+    }
+  }
+}
+</script>
+```
+
+### menuSet 下拉菜单项集合
+
+接收一个 `对象数组`, 数组内每一个 `对象` 表示一个 `下拉菜单项`，只作用于 `dropdown （下拉菜单按钮）`。
+
+- 类型: `Array`
+- 必传: `类型为 dropdown 时必传`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          floatButtonSet: [
+            {
+              renderType: 'button',
+              text: '新增高质量人类',
+              type: 'primary',
+              onClick: this.added
+            },
+            {
+              renderType: 'slot'
+            },
+            {
+              renderType: 'dropdown',
+              text: '导出数据',
+              type: 'info',
+              menuSet: [
+                {}
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    added() {
+      console.log('新增高质量人类名单')
+    }
+  }
+}
+</script>
+```
+
+### menu 下拉菜单项配置
+
+这里的 `menu` 并非真的有这个属性，而是代指 `menuSet` 的每个子元素，表示的是每一个 `下拉菜单项`。
+
+#### text 下拉菜单项按钮文本
+
+- 类型: `String`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          floatButtonSet: [
+            {
+              renderType: 'button',
+              text: '新增高质量人类',
+              type: 'primary',
+              onClick: this.added
+            },
+            {
+              renderType: 'slot'
+            },
+            {
+              renderType: 'dropdown',
+              text: '导出数据',
+              type: 'info',
+              menuSet: [
+                {
+                  text: '导出高质量男孩'
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    added() {
+      console.log('新增高质量人类名单')
+    }
+  }
+}
+</script>
+```
+
+#### onClick 下拉菜单项按钮点击事件
+
+接收一个函数，在下拉菜单项按钮点击时执行。
+
+- 类型: `Function`
+- 必传: `是`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          floatButtonSet: [
+            {
+              renderType: 'button',
+              text: '新增高质量人类',
+              type: 'primary',
+              onClick: this.added
+            },
+            {
+              renderType: 'slot'
+            },
+            {
+              renderType: 'dropdown',
+              text: '导出数据',
+              type: 'info',
+              menuSet: [
+                {
+                  text: '导出高质量男孩',
+                  onClick: this.leadingOutBoys
+                },
+                {
+                  text: '导出高质量女孩',
+                  onClick: this.leadingOutGirls
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    added() {
+      console.log('新增高质量人类名单')
+    },
+    leadingOutBoys() {
+      console.log('导出高质量男孩名单')
+    },
+    leadingOutGirls() {
+      console.log('导出高质量女孩名单')
+    }
+  }
+}
+</script>
+```
+
+### disabled 禁用按钮
+
+只作用于 `button （普通按钮）` 和 `dropdown （下拉菜单按钮）`。
+
+- 类型: `Boolean`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          floatButtonSet: [
+            {
+              renderType: 'button',
+              text: '新增高质量人类',
+              type: 'primary',
+              onClick: this.added,
+              disabled: true
+            },
+            {
+              renderType: 'slot'
+            },
+            {
+              renderType: 'dropdown',
+              text: '导出数据',
+              type: 'info',
+              menuSet: [
+                {
+                  text: '导出高质量男孩',
+                  onClick: this.leadingOutBoys
+                },
+                {
+                  text: '导出高质量女孩',
+                  onClick: this.leadingOutGirls
+                }
+              ],
+              disabled: false
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    added() {
+      console.log('新增高质量人类名单')
+    },
+    leadingOutBoys() {
+      console.log('导出高质量男孩名单')
+    },
+    leadingOutGirls() {
+      console.log('导出高质量女孩名单')
+    }
+  }
+}
+</script>
+```
+
+### slot 浮动按钮插槽
+
+在某些时候，我们预设的按钮不满足需求，就需要使用到插槽来实现自定义按钮，在接收 `slot` 字段之前，务必先将 `renderType` 的值设置为 `slot`
+
+- 类型: `String`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData">
+    <template slot="more">
+      <el-dropdown split-button type="primary" size="small">
+        更多名单
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>凶猛的小萝莉</el-dropdown-item>
+          <el-dropdown-item>沧伤的小正太</el-dropdown-item>
+          <el-dropdown-item>娇萌的怪叔叔</el-dropdown-item>
+          <el-dropdown-item>恐怖的御姐姐</el-dropdown-item>
+          <el-dropdown-item>性感的老阿姨</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </template>
+  </table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          floatButtonSet: [
+            {
+              renderType: 'slot',
+              slot: 'more'
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+```
 
 
 ## searchBarSet 搜索栏
 ## paginationSet 分页配置
-
-
-
 
 ## loading 加载动画
 
@@ -1276,17 +1777,16 @@ export default {
 
 
 
-[comment]: <> (#### 浮动按钮)
 
-[comment]: <> (在头部右侧新增浮动按钮，可以配置不同的 `文本内容`，`类型（普通按钮、下拉菜单按钮等）`、`风格（颜色）`、`事件` 等等。)
 
-[comment]: <> (![]&#40;https://cdn.jsdelivr.net/gh/og-liu/image-host/20211029162157.png&#41;)
+
+
+
+
 
 [comment]: <> (#### 搜索栏)
 
 [comment]: <> (搜索栏提供各种 `类型` 控件的搜索项，包括 `普通文本框`、`下拉菜单` 等等，点击 `查询按钮` 将会暴露出 `查询事件`，具体代码需要自行编写，点击重置则清空搜索栏。)
-
-[comment]: <> (![]&#40;https://cdn.jsdelivr.net/gh/og-liu/image-host/20211029163434.png&#41;)
 
 [comment]: <> (#### 操作按钮)
 
@@ -1308,7 +1808,6 @@ export default {
 
 [comment]: <> (浮动按钮改造成可以定位，分页改造成注入)
 
-[comment]: <> (在头部右侧新增浮动按钮，可以配置不同的 `文本内容`，`类型（普通按钮、下拉菜单按钮等）`、`风格（颜色）`、`事件` 等等。)
 
 [comment]: <> (#### 按钮位置)
 

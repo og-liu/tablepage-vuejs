@@ -9,7 +9,7 @@
     @goBack="goBack"
     @onSearch="onSearch"
     :loading="loading">
-    <template slot="clear">
+    <template slot="more">
       <el-dropdown split-button type="primary" size="small">
         更多名单
         <el-dropdown-menu slot="dropdown">
@@ -45,19 +45,21 @@ export default {
     return {
       floatButtonSet: [
         {
-          type: 'button',
+          renderType: 'button',
           text: '新增高质量人类',
-          style: 'primary',
+          type: 'primary',
+          icon: 'el-icon-edit',
           onClick: this.added
         },
         {
-          type: 'slot',
-          slot: 'clear'
+          renderType: 'slot',
+          slot: 'more'
         },
         {
-          type: 'dropdown',
+          renderType: 'dropdown',
           text: '导出数据',
-          list: [
+          type: 'primary',
+          menuSet: [
             {
               text: '导出高质量男孩',
               onClick: this.leadingOutBoys
@@ -69,10 +71,10 @@ export default {
           ],
         },
         {
-          type: 'button',
+          renderType: 'button',
           text: '黑名单',
           disabled: true,
-          style: 'info',
+          type: 'info',
           onClick: this.blacklist
         }
       ],

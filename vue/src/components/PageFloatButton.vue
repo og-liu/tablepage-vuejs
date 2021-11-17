@@ -26,7 +26,7 @@ export default {
       props: ['data'],
       render: function (h) {
         const data = this.data
-        switch (data.type) {
+        switch (data.renderType) {
           case 'button':
             return this.$parent.renderButton(h, data)
           case 'dropdown':
@@ -34,7 +34,7 @@ export default {
           case 'slot':
             return this.$parent.renderSlot(h, data)
           default:
-            console.error(new Error('按钮类型异常, 请检查是否正确传入 type 参数！'))
+            console.error(new Error('按钮类型异常, 请检查是否正确传入 renderType 参数！'))
             break
         }
       }
@@ -64,7 +64,7 @@ export default {
         props: {
           plain: true,
           size: 'small',
-          type: data.style,
+          type: data.type,
           icon: data.icon,
           disabled: data.disabled
         },
@@ -88,7 +88,8 @@ export default {
         props: {
           plain: true,
           size: 'small',
-          type: data.style
+          disabled: data.disabled,
+          type: data.type
         },
         style: {
           marginLeft: '10px'
@@ -100,7 +101,7 @@ export default {
     },
     // 下拉菜单列表
     renderDropdownList(h, data) {
-      let list = data.list
+      let list = data.menuSet
       let children = []
       list.map(item => children.push(this.renderDropdownItem(h, item)))
       return h('el-dropdown-menu', {attrs: {slot: 'dropdown'}}, children)
