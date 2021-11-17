@@ -151,7 +151,7 @@ export default {
     return {
       floatButtonSet: [
         {
-          type: 'button',
+          renderType: 'button',
           text: '新增高质量人类',
           style: 'primary',
           onClick: this.added
