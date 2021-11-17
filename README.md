@@ -13,7 +13,7 @@ npm install tablepage-vuejs --save
 
 > 如果项目中没有使用 Element UI，则也需要一并引入
 
-#### main.js
+##### main.js
 
 ```javascript
 // The Vue build version to load with the `import` command
