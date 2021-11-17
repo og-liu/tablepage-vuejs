@@ -184,7 +184,7 @@ export default {
       ],
       searchBarSet: [
         {
-          type: 'select',
+          renderType: 'select',
           label: '学历',
           placeholder: '请选择学历',
           key: 'education',
@@ -205,7 +205,7 @@ export default {
           ]
         },
         {
-          type: 'input',
+          renderType: 'input',
           label: '姓名',
           width: 240,
           key: 'name',

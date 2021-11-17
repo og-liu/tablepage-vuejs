@@ -33,7 +33,7 @@ export default {
         this.SearchItems = n
         // 允许输入框不传 value 值，默认为空
         this.SearchItems.map((item, index) => {
-          if((item.type === 'input' || item.type === 'select') && item.value === undefined) {
+          if((item.renderType === 'input' || item.renderType === 'select') && item.value === undefined) {
             this.$set(this.SearchItems[index], 'value', '')
           }
         })
@@ -58,11 +58,13 @@ export default {
 
         const vm = this.$parent.$parent
 
-        switch (item.type) {
+        switch (item.renderType) {
           case 'input':
             return vm.renderInput(h, item, index, self)
           case 'select':
             return vm.renderSelect(h, item, index, self)
+          case 'slot':
+            return vm.renderSlot(h, item, index, self)
           default:
             break
         }
@@ -70,6 +72,15 @@ export default {
     }
   },
   methods: {
+    renderSlot(h, item, index, self) {
+      return h('el-form-item', {
+        props: {
+          label: item.label
+        },
+        scopedSlots: item.slot,
+        slot: item.slot
+      }, [self.$parent.$parent.$parent.$scopedSlots[item.slot]()])
+    },
     // input 输入框渲染
     renderInput(h, item, index, self) {
       return h('el-form-item', {props: {label: item.label}}, [
@@ -141,6 +152,7 @@ export default {
     // 重置搜索栏数据
     onClear() {
       this.SearchItems.map(item => item.value = '')
+      this.$emit('onClear')
       this.onSearch()
     },
     // 查询数据 将搜索条数据组装传递到最外层

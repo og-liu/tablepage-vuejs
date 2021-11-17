@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="panel-body">
-      <search-bar @onSearch="onSearch"></search-bar>
+      <search-bar @onSearch="onSearch" @onClear="onClear"></search-bar>
       <table-layout :tableData="tableData" :loading="loading"></table-layout>
     </div>
     <table-pagination
@@ -74,6 +74,9 @@ export default {
   methods: {
     onSearch(obj) {
       this.$emit('onSearch', obj)
+    },
+    onClear(obj) {
+      this.$emit('onClear')
     },
     goBack(size) {
       this.$emit('goBack', size)

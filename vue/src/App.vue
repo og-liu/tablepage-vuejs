@@ -8,6 +8,7 @@
     backButton
     @goBack="goBack"
     @onSearch="onSearch"
+    @onClear="onClear"
     :loading="loading">
     <template slot="more">
       <el-dropdown split-button type="primary" size="small">
@@ -24,6 +25,9 @@
     <template slot="names" slot-scope="scope">
       <div style="color: #409eff">{{scope.row.name}}</div>
     </template>
+    <template slot="birthday" slot-scope="scope">
+      <el-date-picker size="small" v-model="birthday" type="date" placeholder="选择日期"></el-date-picker>
+    </template>
   </table-page>
 </template>
 
@@ -35,6 +39,7 @@ export default {
   components:{ tablePage },
   data(){
     return {
+      birthday: '',
       tableData: [],
       pagination: {},
       loading: false,
@@ -80,7 +85,19 @@ export default {
       ],
       searchBarSet: [
         {
-          type: 'select',
+          renderType: 'input',
+          label: '姓名',
+          width: 240,
+          key: 'name',
+          placeholder: '请输入姓名'
+        },
+        {
+          renderType: 'slot',
+          label: '出生日期',
+          slot: 'birthday',
+        },
+        {
+          renderType: 'select',
           label: '学历',
           placeholder: '请选择学历',
           key: 'education',
@@ -99,13 +116,6 @@ export default {
               label: '博士'
             }
           ]
-        },
-        {
-          type: 'input',
-          label: '姓名',
-          width: 240,
-          key: 'name',
-          placeholder: '请输入姓名'
         }
       ],
       tableColumnSet: [
@@ -183,6 +193,9 @@ export default {
     this.getData()
   },
   methods: {
+    onClear() {
+      this.birthday = ''
+    },
     doEdit(row) {
       console.log(row)
       console.log('点击了编辑按钮')
@@ -244,6 +257,7 @@ export default {
     // 点击搜索按钮
     onSearch(search) {
       this.search = search
+      this.search.birthday = this.birthday
       this.getData(1, this.pagination.size, search)
     },
     // 当前页码改变
