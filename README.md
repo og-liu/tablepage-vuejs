@@ -1115,7 +1115,7 @@ export default {
 
 - 传入方式: `Provide`
 - 类型: `Array`, `对象数组`，每个元素都应该是一个对象，而每个对象表示每个 `浮动按钮` 的配置信息
-- 必传: '否'
+- 必传: `否`
 
 ```html run { title: '基本用法' }
 <template>
@@ -1689,8 +1689,430 @@ export default {
 </script>
 ```
 
+## searchBarSet 搜索栏（集合）
 
-## searchBarSet 搜索栏
+> `searchBarSet` 提供搜索栏组件, 它将出现在表格上方， 它是一个容器，由一个或者多个 `搜索项` 组成， 如果内置的 `搜索控件` 不满足需求，可利用插槽自定义 `搜索项`。
+
+- 传入方式: `Provide`
+- 类型: `Array`, `对象数组`，每个元素都应该是一个对象，而每个对象表示每个 `搜索项` 的配置信息
+- 必传: `否`
+
+## searchEvents 搜索栏事件
+
+> 在点击 `查询`、`重置` 按钮时, 会暴露出对应的事件
+
+### onSearch 点击 `查询` 按钮时
+
+- 传入方式 `prop`
+- 类型: `Function`
+- 必传: `是`
+- 回调参数: `search` 包含内置 `搜索项` 绑定的值
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData" @onSearch="onSearch"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: []
+    }
+  },
+  methods: {
+    onSearch(search) {
+      console.log(search)
+    }
+  }
+}
+</script>
+```
+
+### onClear 点击 `重置` 按钮时
+
+- 传入方式 `prop`
+- 类型: `Function`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData" @onSearch="onSearch" @onClear="onClear"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: []
+    }
+  },
+  methods: {
+    onSearch(search) {
+      console.log(search)
+    },
+    onClear() {
+      // 这里可以重置一些自定义搜索项的值
+    }
+  }
+}
+</script>
+```
+
+## searchItem 搜索项配置
+
+> 这里的 `searchItem` 并非真的有这个属性，而是代指 `searchBarSet` 的每个子元素、表示的是每一个 `搜索项` 的具体配置信息，这里的每个子元素之间的顺序在页面上展示的顺序对应。
+
+### renderType 搜索项类型
+
+目前搜索项内置的控件类型分为三种: `input （输入框）`、`select （选择器）`、`slot (自定义搜索项)`。
+
+- 类型: `String`
+- 必传: `是`
+- 可选值: `input （输入框）`、`select （选择器）`、`slot (自定义搜索项)`。
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"  @onSearch="onSearch"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          searchBarSet: [
+            {
+              renderType: 'input'
+            },
+            {
+              renderType: 'select'
+            },
+            {
+              renderType: 'slot'
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    onSearch(search) {
+      console.log(search)
+    }
+  }
+}
+</script>
+```
+
+### label 搜索项标签
+
+出现在每个 `搜索项` 控件左侧的文本信息
+
+- 类型: `String`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"  @onSearch="onSearch"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          searchBarSet: [
+            {
+              renderType: 'input',
+              label: '姓名'
+            },
+            {
+              renderType: 'select',
+              label: '学历'
+            },
+            {
+              renderType: 'slot',
+              label: '出生日期'
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    onSearch(search) {
+      console.log(search)
+    }
+  }
+}
+</script>
+```
+
+### key 搜索项绑定字段
+
+只作用于 `input （输入框）`、`select （选择器）`
+
+- 类型: `String`
+- 必传: `是`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"  @onSearch="onSearch"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          searchBarSet: [
+            {
+              renderType: 'input',
+              label: '姓名',
+              key: 'name'
+            },
+            {
+              renderType: 'select',
+              label: '学历',
+              key: 'education'
+            },
+            {
+              renderType: 'slot',
+              label: '出生日期'
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    onSearch(search) {
+      console.log(search)
+    }
+  }
+}
+</script>
+```
+
+### placeholder 搜索项占位符
+
+只作用于 `input （输入框）`、`select （选择器）`
+
+- 类型: `String`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"  @onSearch="onSearch"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          searchBarSet: [
+            {
+              renderType: 'input',
+              label: '姓名',
+              key: 'name',
+              placeholder: '请输入姓名'
+            },
+            {
+              renderType: 'select',
+              label: '学历',
+              key: 'education',
+              placeholder: '请选择学历'
+            },
+            {
+              renderType: 'slot',
+              label: '出生日期'
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    onSearch(search) {
+      console.log(search)
+    }
+  }
+}
+</script>
+```
+
+### width 搜索项控件宽度
+
+只作用于 `input （输入框）`、`select （选择器）`
+
+- 类型: `Number`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"  @onSearch="onSearch"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          searchBarSet: [
+            {
+              renderType: 'input',
+              label: '姓名',
+              key: 'name',
+              placeholder: '请输入姓名',
+              width: 240
+            },
+            {
+              renderType: 'select',
+              label: '学历',
+              key: 'education',
+              placeholder: '请选择学历',
+              width: 240
+            },
+            {
+              renderType: 'slot',
+              label: '出生日期'
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    onSearch(search) {
+      console.log(search)
+    }
+  }
+}
+</script>
+```
+
+### options 搜索项选项配置
+
+只作用于 `select （选择器）`
+
+- 类型: `Array`, `对象数组`，数组内的每个对象表示一个 `选项`，该对象接收两个参数: `value`, `label`, 分别表示当前选项的值和名称
+- 必传: 类型为 `select （选择器）` 时，必传
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"  @onSearch="onSearch"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          searchBarSet: [
+            {
+              renderType: 'input',
+              label: '姓名',
+              key: 'name',
+              placeholder: '请输入姓名',
+              width: 240
+            },
+            {
+              renderType: 'select',
+              label: '学历',
+              key: 'education',
+              placeholder: '请选择学历',
+              width: 240,
+              options: [
+                {
+                  value: '专科',
+                  label: '专科'
+                }, {
+                  value: '本科',
+                  label: '本科'
+                }, {
+                  value: '硕士',
+                  label: '硕士'
+                }, {
+                  value: '博士',
+                  label: '博士'
+                }
+              ]
+            },
+            {
+              renderType: 'slot',
+              label: '出生日期'
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    onSearch(search) {
+      console.log(search)
+    }
+  }
+}
+</script>
+```
+
+### slot 搜索项插槽
+
+在某些时候，我们预设的 `搜索项` 不满足需求，就需要使用到插槽来实现 `自定义搜索项`，在接收 `slot` 字段之前，务必先将 `renderType` 的值设置为 `slot`
+
+- 类型: `String`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"  @onSearch="onSearch">
+    <template slot="birthday" slot-scope="scope">
+      <el-date-picker size="small" v-model="birthday" type="date" placeholder="选择日期"></el-date-picker>
+    </template>
+  </table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [],
+      provide() {
+        return {
+          searchBarSet: [
+            {
+              renderType: 'slot',
+              slot: 'birthday',
+              label: '出生日期'
+            }
+          ]
+        }
+      }
+    }
+  },
+  methods: {
+    onSearch(search) {
+      console.log(search)
+    }
+  }
+}
+</script>
+```
+
 ## paginationSet 分页配置
 
 ## loading 加载动画
@@ -1756,25 +2178,39 @@ export default {
 </script>
 ```
 
+# 更新日志
+
+## 2021-11-17
+
+- 搜索栏新增（自定义搜索项）插槽
+- 浮动按钮新增（自定义按钮项）插槽
+- 浮动按钮新增 `disabled` 禁用属性
+- 搜索栏重置按钮新增事件 `@onClear`
+- 命名规范化
+  1. 防止与 `ElementUI` 属性冲突，原本控件类型 `type` 更改为 `renderType`
+  2. 集合统一添加 `Set` 后缀
+  3. 加强语义化，下拉菜单按钮 `list` 更改为 `menuSet`
+- 为了化繁为简，更好的分类处理，将原本 `分页子组件` 完全重写，使用 `Provide` 传入参数
+- 新增副标题 `subtitle`
+
+<hr/>
 
 # 更新预告
+
 > 持续开发、更新、优化，暂时计划要实现的功能如下:
+
+- 新增横向滚动条
+- 搜索栏新增高级搜索
+- 表格新增批量操作
+- 表格新增筛选列功能
+- 浮动按钮新增svg图标
+
+- 搜索栏新增更多控件类型的搜索项
+- 浮动按钮新增更多控件类型的按钮项
 
 - 新增获取数据之前事件
 - 新增获取数据完成时事件
 - 新增获取数据失败时事件
-
-- 搜索栏新增高级搜索
-- 搜索栏新增更多控件类型的搜索项
-- 搜索栏新增插槽
-- 浮动按钮新增更多控件类型的按钮项
-- 浮动按钮新插槽
-- 表格新增批量操作
-- 表格新增筛选列功能
-
-# 更新日志
-- 暂无日志
-
 
 
 
