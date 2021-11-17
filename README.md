@@ -40,7 +40,7 @@ new Vue({
 
 > 这是最基本的使用，至少得传入 `title`、`tableData` 以及 `tableColumnSet`，分别表示 `页面标题`、`数据源` 和 `每一列的配置信息`
 
-```html run { title: '基础版' }
+```vue
 <template>
   <table-page title="高质量人类" :tableData="tableData"></table-page>
 </template>
@@ -105,9 +105,11 @@ export default {
 </script>
 ```
 
-> 通过传入更多属性以展示一个功能丰富的表格页面，数据来源 Easy Mock 参考文档: https://mock.ogliu.com
+## 综合实例
 
-```html run { title: '综合实例' }
+> 通过传入更多属性以展示一个功能丰富的表格页面, 你可以在下方代码区修改代码进行调试，数据来源 `Easy Mock` 参考文档: https://mock.ogliu.com
+
+```html run { title: '在线预览' }
 <template>
   <table-page
     title="高质量人类"
@@ -439,7 +441,7 @@ export default {
 - 类型: `Array`，`对象数组`，每个元素都应该是一个对象，而每个对象表示每列数据的配置信息
 - 必传: `是`
 
-```html run { title: '基本用法' }
+```vue
 <template>
   <table-page title="高质量人类" :tableData="tableData"></table-page>
 </template>
@@ -1130,7 +1132,7 @@ export default {
 - 类型: `Array`, `对象数组`，每个元素都应该是一个对象，而每个对象表示每个 `浮动按钮` 的配置信息
 - 必传: `否`
 
-```html run { title: '基本用法' }
+```vue
 <template>
   <table-page title="高质量人类" :tableData="tableData"></table-page>
 </template>
