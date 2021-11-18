@@ -73,7 +73,7 @@
 section.cover.has-mask .mask {opacity: 0.86;}
 </style>
 
-[GitHub](https://github.com/docsifyjs/docsify/)
+[GitHub](https://github.com/og-liu/tablepage-vuejs)
 [Get Started](#快速上手)
 
 ![](https://cdn.jsdelivr.net/gh/og-liu/image-host/20211117155017.jpg)
