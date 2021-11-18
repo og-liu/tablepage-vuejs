@@ -2142,6 +2142,248 @@ export default {
 
 ## paginationSet 分页配置
 
+> 提供表格底部分页，由于分页需要跟表格交互而 `provide` 和 `inject` 的绑定并不是可响应的，所以它的传入方式稍微有点不一样，依然是以 `Provide` 的方式传入，但是接收的是一个具有返回绑定分页配置信息对象的函数。
+
+- 传入方式: `Provide`
+- 类型: `Function`
+- 必传: `否`
+
+##### 用法
+
+1. 在 `data` 创建一个对象类型的变量 `pagination`，用于操作分页信息，变量名可以自取，这里以 `pagination` 为例
+   
+2. 在 `Provide` 创建一个 `paginationSet` 用于将 `data` 中创建的对象传入到组件
+   
+3. 在请求接口的方法中，改变 `pagination` 的值，使组件产生交互
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData" :loading="loading"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+
+export default {
+  data() {
+    return {
+      pagination: {},
+      tableData: [],
+      loading: false
+    }
+  },
+  provide() {
+    return {
+      paginationSet: () => this.pagination
+    }
+  },
+  methods: {
+    getData(page = 1, pageSize = 10, search = {}) {
+      this.loading = true
+      // 模拟接口
+      axios.get('https://mock.ogliu.com/mock/618484ed957ff105d1b54bad/api/list', {
+        params: { page, pageSize, ...search }
+      }).then(response => {
+        this.tableData = response.data.data
+        this.pagination = {
+          size: pageSize,
+          total: response.data.meta.pagination.total,
+          current: response.data.meta.pagination.current_page
+        }
+        this.loading = false
+      }).catch(function (error) {
+        console.log(error)
+      })
+    }
+  }
+}
+</script>
+```
+
+## paginationEvents 分页事件
+
+> `paginationSet` 对使组件对外产生分页相关的事件，对应 `Element UI` 分页事件
+
+### currentChange 当前页改变时
+
+- 传入方式: `Prop`
+- 类型: `Function`
+- 必传: `否`
+- 回调参数: `当前页`
+
+```vue
+<template>
+  <table-page
+    title="高质量人类"
+    :tableData="tableData"
+    :loading="loading"
+    @currentChange="currentChange">
+  </table-page>
+</template>
+
+<script type="text/ecmascript-6">
+
+export default {
+  data() {
+    return {
+      pagination: {},
+      tableData: [],
+      loading: false
+    }
+  },
+  provide() {
+    return {
+      paginationSet: () => this.pagination
+    }
+  },
+  methods: {
+    currentChange(page) {
+      console.log(page)
+    }
+  }
+}
+</script>
+```
+
+### sizeChange 每页展示数量改变时
+
+- 传入方式: `Prop`
+- 类型: `Function`
+- 必传: `否`
+- 回调参数: `每页条数`
+
+```vue
+<template>
+  <table-page
+    title="高质量人类"
+    :tableData="tableData"
+    :loading="loading"
+    @sizeChange="sizeChange">
+  </table-page>
+</template>
+
+<script type="text/ecmascript-6">
+
+export default {
+  data() {
+    return {
+      pagination: {},
+      tableData: [],
+      loading: false
+    }
+  },
+  provide() {
+    return {
+      paginationSet: () => this.pagination
+    }
+  },
+  methods: {
+    sizeChange(size) {
+      console.log(size)
+    }
+  }
+}
+</script>
+```
+
+## pagination 分页选项配置
+
+> 这里指的是 `data` 中存储的 `pagination` 对象, 由于操作方式都一样，这里就不一一给出 `demo` 演示了，展示一个完整版 `demo`，请自行查阅对应选项。
+
+```vue
+<template>
+  <table-page
+    title="高质量人类"
+    :tableData="tableData"
+    :loading="loading"
+    @currentChange="currentChange"
+    @sizeChange="sizeChange">
+  </table-page>
+</template>
+
+<script type="text/ecmascript-6">
+
+export default {
+  data() {
+    return {
+      pagination: {
+        current: 1,
+        total: 0,
+        size: 10,
+        sizes: [10, 20, 30, 40, 50, 100],
+        layout: 'total, sizes, prev, pager, next, jumper'
+      },
+      tableData: [],
+      loading: false
+    }
+  },
+  provide() {
+    return {
+      paginationSet: () => this.pagination
+    }
+  },
+  methods: {
+    getData(page = 1, pageSize = 10, search = {}) {
+      this.loading = true
+      // 模拟接口
+      axios.get('https://mock.ogliu.com/mock/618484ed957ff105d1b54bad/api/list', {
+        params: { page, pageSize, ...search }
+      }).then(response => {
+        this.tableData = response.data.data
+        this.pagination = {
+          size: pageSize,
+          total: response.data.meta.pagination.total,
+          current: response.data.meta.pagination.current_page
+        }
+        this.loading = false
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    sizeChange(size) {
+      console.log(size)
+    },
+    currentChange(page) {
+      console.log(page)
+    }
+  }
+}
+</script>
+```
+
+### current 当前页数
+
+- 传入方式: `pagination` 属性
+- 类型: `Number`,
+- 必传: `否`
+
+### total 总条目数
+
+- 传入方式: `pagination` 属性
+- 类型: `Number`,
+- 必传: `否`
+
+### size 每页显示条目个数
+
+- 传入方式: `pagination` 属性
+- 类型: `Number`
+- 必传: `否`
+- 默认值: `10`
+
+### sizes 每页显示个数选择器的选项
+
+- 传入方式: `pagination` 属性
+- 类型: `NumberArray`, 数字数组
+- 必传: `否`
+- 默认值: [10, 20, 30, 40, 50, 100]
+
+### layout 组件布局
+
+- 传入方式: `pagination` 属性
+- 类型: `String`
+- 必传: `否`
+- 可选参数: `sizes`, `prev`, `pager`, `next`, `jumper`, `total`
+- 默认值: `sizes`, `prev`, `pager`, `next`, `jumper`, `total`
+
 ## loading 加载动画
 
 表格数据加载动画
@@ -2226,7 +2468,7 @@ export default {
 
 > 持续开发、更新、优化，暂时计划要实现的功能如下:
 
-- 新增横向滚动条
+- 新增悬浮横向滚动条
 - 搜索栏新增高级搜索
 - 表格新增批量操作
 - 表格新增筛选列功能
