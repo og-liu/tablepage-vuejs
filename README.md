@@ -135,7 +135,7 @@ export default {
     @goBack="goBack"
     :loading="loading">
     <template slot="birthday" slot-scope="scope">
-      <el-date-picker size="small" v-model="birthday" type="date" placeholder="选择日期"></el-date-picker>
+      <el-date-picker value-format="yyyy-MM-dd" size="small" v-model="birthday" type="date" placeholder="选择日期"></el-date-picker>
     </template>
     <template slot="clear">
       <el-dropdown split-button type="primary" size="small">
@@ -339,8 +339,7 @@ export default {
     },
     // 点击搜索按钮
     onSearch(search) {
-      this.search = search
-      this.getData(1, this.pagination.size, search)
+      this.getData(1, this.pagination.size, Object.assign({birthday: this.birthday}, search))
     },
     onClear() {
       this.birthday = ''
