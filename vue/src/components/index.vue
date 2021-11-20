@@ -1,28 +1,30 @@
 <!-- Vue Single File Component, Created by liukun on 2021/7/1. -->
 <template>
-  <div class="panel">
-    <div class="panel-heading">
-      <div class="panel-title tip-header">
-        <div class="title tip-title">
-          <h3>{{ title }}</h3>
-          <span v-if="subtitle" class="tip">{{ subtitle }}</span>
-        </div>
-        <div class="float-btn">
-          <float-button></float-button>
+  <div id="TablePage">
+    <div class="panel">
+      <div class="panel-heading">
+        <div class="panel-title tip-header">
+          <div class="title tip-title">
+            <h3>{{ title }}</h3>
+            <span v-if="subtitle" class="tip">{{ subtitle }}</span>
+          </div>
+          <div class="float-btn">
+            <float-button></float-button>
+          </div>
         </div>
       </div>
+      <div class="panel-body">
+        <slot></slot>
+        <search-bar @onSearch="onSearch" @onClear="onClear"></search-bar>
+        <table-layout :tableData="tableData" :loading="loading"></table-layout>
+      </div>
+      <table-pagination
+        @sizeChange="sizeChange"
+        @currentChange="currentChange"
+        :backButton="backButton"
+        @goBack="goBack">
+      </table-pagination>
     </div>
-    <div class="panel-body">
-      <slot></slot>
-      <search-bar @onSearch="onSearch" @onClear="onClear"></search-bar>
-      <table-layout :tableData="tableData" :loading="loading"></table-layout>
-    </div>
-    <table-pagination
-      @sizeChange="sizeChange"
-      @currentChange="currentChange"
-      :backButton="backButton"
-      @goBack="goBack">
-    </table-pagination>
   </div>
 </template>
 
@@ -93,74 +95,76 @@ export default {
 </script>
 
 <style lang="less">
-.panel {
-  position: relative;
-  margin-bottom: 15px;
-  border-width: 0;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 4px 22px rgba(102, 177, 255, 0.08);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  &.fixed-panel {
-    height: 100%;
-    overflow: scroll;
-  }
-  .panel-heading {
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    box-shadow: 0 4px 22px rgba(102, 177, 255, 0.09);
+#TablePage {
+  .panel {
     position: relative;
-    z-index: 1;
-    .panel-title {
-      display: block;
-      padding: 15px 15px;
-      font-size: 18px;
-      color: #37474f;
-      margin-top: 0;
-      margin-bottom: 0;
+    margin-bottom: 15px;
+    border-width: 0;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 4px 22px rgba(102, 177, 255, 0.08);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    &.fixed-panel {
+      height: 100%;
+      overflow: scroll;
     }
-    .tip-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .tip-title {
+    .panel-heading {
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      box-shadow: 0 4px 22px rgba(102, 177, 255, 0.09);
+      position: relative;
+      z-index: 1;
+      .panel-title {
+        display: block;
+        padding: 15px 15px;
+        font-size: 18px;
+        color: #37474f;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      .tip-header {
         display: flex;
-        align-items: end;
-        h3 {
-          margin:  0;
-          font-size: 18px;
-        }
-        .tip {
-          font-weight: 900;
-          font-size: 14px;
-          color: #666666;
-          margin-left: 10px;
-          margin-top: 10px;
+        justify-content: space-between;
+        align-items: center;
+        .tip-title {
+          display: flex;
+          align-items: end;
+          h3 {
+            margin:  0;
+            font-size: 18px;
+          }
+          .tip {
+            font-weight: 900;
+            font-size: 14px;
+            color: #666666;
+            margin-left: 10px;
+            margin-top: 10px;
+          }
         }
       }
     }
-  }
-  .panel-body {
-    position: relative;
-    padding: 15px 15px;
-    &.no-padding {
-      padding:15px 0;
+    .panel-body {
+      position: relative;
+      padding: 15px 15px;
+      &.no-padding {
+        padding:15px 0;
+      }
+      &[min-height] {
+        min-height: 300px;
+      }
     }
-    &[min-height] {
-      min-height: 300px;
-    }
-  }
-  .panel-footer {
-    transition:  width 0.1s linear;
-    padding: 12px 0!important;
-    background-color: #fff;
-    box-shadow: 0 -4px 22px rgba(102, 177, 255, 0.09);
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px;
-    width: auto;
-    .pages {
-      width: 100%;
-      text-align: center;
+    .panel-footer {
+      transition:  width 0.1s linear;
+      padding: 12px 0!important;
+      background-color: #fff;
+      box-shadow: 0 -4px 22px rgba(102, 177, 255, 0.09);
+      border-bottom-right-radius: 4px;
+      border-bottom-left-radius: 4px;
+      width: auto;
+      .pages {
+        width: 100%;
+        text-align: center;
+      }
     }
   }
 }
