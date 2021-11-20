@@ -13,6 +13,7 @@
       </div>
     </div>
     <div class="panel-body">
+      <slot></slot>
       <search-bar @onSearch="onSearch" @onClear="onClear"></search-bar>
       <table-layout :tableData="tableData" :loading="loading"></table-layout>
     </div>
