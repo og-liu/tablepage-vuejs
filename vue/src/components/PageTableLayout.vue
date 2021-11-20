@@ -110,7 +110,7 @@ export default {
               label: item.label,
               align: item.align || 'center',
               fixed: 'right',
-              width: item.handleButtonSet.length * 38 + 22,
+              width: (item.maximum || item.handleButtonSet.length) * 38 + 22,
               renderHeader: item.renderHeader
             }
           }, [this.$scopedSlots.default])

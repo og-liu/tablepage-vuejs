@@ -274,6 +274,7 @@ export default {
         {
           label: '操作',
           renderType: 'button',
+          maximum: 2,
           handleButtonSet: [
             {
               content: '编辑',
@@ -820,6 +821,62 @@ export default {
 
 ### handleButtonSet 操作按钮集合
 在表格末尾一列可以设置 `操作按钮集合` 列，首先需要把 `renderType` 的值设置为 `button`，然后它将接收一个 `handleButtonSet` 字段，它是一个对象数组，数组内每一个对象代表着一个按钮的配置，为了方便理解，下面我将以 `handleButton` 来表示这个对象，当然它的顺序也对应着页面上渲染的顺序，与 `tableColumnSet` 一样，`handleButtonSet` 只是一个容器，按钮的具体配置都落实在它的子元素 `handleButton` 上，`操作按钮` 可以获取当前行的数据做对应的操作，整个操作列在页面宽度不够的时候会固定展示在右侧。
+
+#### maximum 最多显示几个按钮宽度
+
+- 类型: `Number`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          name: '大山'
+        }
+      ],
+      provide() {
+        return {
+          tableColumnSet: [
+            {
+              label: '姓名',
+              prop: 'name',
+              minWidth: 200
+            },
+            {
+              label: '操作',
+              renderType: 'button',
+              maximum: 3,
+              handleButtonSet: [
+                {
+                  content: '编辑',
+                  icon: 'el-icon-edit',
+                  type: 'primary',
+                  event: 'doEdit',
+                  // 如果当前行的 name 值为大山，则显示按钮
+                  isShow: (item) => item.name === '大山'
+                }
+              ]
+            }
+          ]
+        }
+      },
+      methods: {
+        doEdit(row, index) {
+          console.log('点击了编辑按钮')
+        }
+      }
+    }
+  }
+}
+</script>
+```
 
 ### handleButton 操作按钮配置
 
