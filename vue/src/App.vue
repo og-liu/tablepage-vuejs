@@ -9,6 +9,7 @@
     @goBack="goBack"
     @onSearch="onSearch"
     @onClear="onClear"
+    scrollSticky
     :loading="loading">
     <template slot="more">
       <el-dropdown split-button type="primary" size="small">

@@ -1,7 +1,7 @@
 <!-- Vue Single File Component, Created by liukun on 2021/7/2. -->
 <template>
   <transition name="fade" mode="out-in">
-    <el-table ref="tableRef" v-loading="loading" :data="data" border fit style="width: 100%">
+    <el-table v-bind:class="{'scrollSticky': scrollSticky}" ref="tableRef" v-loading="loading" :data="data" border fit style="width: 100%">
       <table-column v-for="(item, index) in tableColumns" :key="index" :item="item">
         <template slot-scope="scope">
           <div class="button-list">
@@ -59,6 +59,10 @@ export default {
     tableData: {
       type: Array,
       required: false
+    },
+    scrollSticky: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {
@@ -144,3 +148,11 @@ export default {
 }
 </style>
 
+<style>
+.scrollSticky .el-table__body-wrapper {
+  overflow-x: hidden !important;
+}
+.scrollSticky .el-table__fixed, .el-table__fixed-right {
+  height: 100% !important;
+}
+</style>

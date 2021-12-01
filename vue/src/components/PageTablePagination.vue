@@ -3,6 +3,9 @@
   <div v-if="show" class="panel-footer" v-sticky  sticky-offset="offset" sticky-side="bottom">
     <div style="position: relative;" class="go-back">
       <el-button style="margin-left: 15px;" v-if="backButton" size="medium" @click="goBack">返回</el-button>
+      <overlay-scrollbars v-if="scrollSticky" ref="scrollRef" :options="scrollOpt" class="scroll-style">
+        <div v-bind:style="{width: scrollBarWidth}" style="height: 10px;"></div>
+      </overlay-scrollbars>
       <div class="pages">
         <el-pagination
           @size-change="sizeChange"
@@ -23,8 +26,12 @@
 
 export default {
   name: 'Pagination',
+  mounted () {
+    if (this.scrollSticky) this.scrollEventListener()
+  },
   data() {
     return {
+      scrollOpt: {},
       show: false,
       pagination: {}
     }
@@ -36,6 +43,9 @@ export default {
     }
   },
   computed: {
+    scrollBarWidth: function () {
+      return this.$parent.$children[2].$refs.tableRef.bodyWidth
+    },
     computedPaginationSet() {
       if (typeof this.paginationSet === 'function') {
         return this.paginationSet()
@@ -64,9 +74,26 @@ export default {
     backButton: {
       type: Boolean,
       default: false
+    },
+    scrollSticky: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
+    scrollEventListener() {
+      this.scrollOpt = {
+        callbacks: {
+          onScroll: () => {
+            const positionX = this.$refs.scrollRef.osInstance().scroll().position.x
+            const tableHead = this.$parent.$children[2].$el.getElementsByClassName('el-table__header-wrapper')[0]
+            const tableBody = this.$parent.$children[2].$el.getElementsByClassName('el-table__body-wrapper')[0]
+            tableHead.scrollLeft = positionX
+            tableBody.scrollLeft = positionX
+          }
+        }
+      }
+    },
     goBack() {
       this.$emit('goBack')
     },
@@ -81,6 +108,14 @@ export default {
 </script>
 
 <style>
+.scroll-style {
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  top: -12px;
+  left: 0;
+}
+
 .go-back {
   display: flex;
   align-items: center;

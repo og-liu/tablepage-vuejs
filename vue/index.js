@@ -4,7 +4,15 @@
 import Vue from 'vue'
 import tablePage from './src/components'
 
+import 'overlayscrollbars/css/OverlayScrollbars.css'
+import OverlayScrollbars from 'overlayscrollbars'
+import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
+
 import sticky from 'vuejs-sticky-directive'
+
+Vue.use(OverlayScrollbarsPlugin)
+Vue.use(OverlayScrollbars)
+
 Vue.use(sticky)
 
 if (typeof window !== 'undefined' && window.Vue) {

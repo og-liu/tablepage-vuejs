@@ -16,12 +16,13 @@
       <div class="panel-body">
         <slot></slot>
         <search-bar @onSearch="onSearch" @onClear="onClear"></search-bar>
-        <table-layout :tableData="tableData" :loading="loading"></table-layout>
+        <table-layout :tableData="tableData" :loading="loading" :scrollSticky="scrollSticky"></table-layout>
       </div>
       <table-pagination
         @sizeChange="sizeChange"
         @currentChange="currentChange"
         :backButton="backButton"
+        :scrollSticky="scrollSticky"
         @goBack="goBack">
       </table-pagination>
     </div>
@@ -68,6 +69,10 @@ export default {
     tableData: {
       type: Array,
       required: true
+    },
+    scrollSticky: {
+      type: Boolean,
+      default: false
     },
     backButton: {
       type: Boolean,
