@@ -1,7 +1,7 @@
 {
   "name": "tablepage-vuejs",
   "description": "为了避免大批量的重复代码，将使用频率极高的表格列表页面封装成一个组件",
-  "version": "1.0.7",
+  "version": "1.1.1",
   "author": "LiuKun <308880147@qq.com>",
   "license": "MIT",
   "private": false,
@@ -19,9 +19,9 @@
     "element-ui": "^2.15.6",
     "less": "^4.1.2",
     "less-loader": "^4.1.0",
+    "svg-vuejs": "^4.0.8",
     "overlayscrollbars": "^1.13.1",
     "overlayscrollbars-vue": "^0.2.2",
-    "svg-vuejs": "^4.0.8",
     "vue": "^2.5.11",
     "vuejs-sticky-directive": "^1.0.2"
   },
