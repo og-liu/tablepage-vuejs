@@ -4,7 +4,7 @@
     <div style="position: relative;" class="go-back">
       <el-button style="margin-left: 15px;" v-if="backButton" size="medium" @click="goBack">返回</el-button>
       <overlay-scrollbars v-if="scrollSticky" ref="scrollRef" :options="scrollOpt" class="scroll-style">
-        <div v-bind:style="{width: scrollBarWidth}" style="height: 10px;"></div>
+        <div v-bind:style="{width: scrollBarWidth}" style="height: 10px; padding: 0 15.5px"></div>
       </overlay-scrollbars>
       <div class="pages">
         <el-pagination
