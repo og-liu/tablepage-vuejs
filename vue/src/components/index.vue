@@ -150,7 +150,7 @@ export default {
     }
     .panel-body {
       position: relative;
-      padding: 15px 15px;
+      padding: 15px 15px 20px;
       &.no-padding {
         padding:15px 0;
       }
