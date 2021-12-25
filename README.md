@@ -2503,10 +2503,40 @@ export default {
 </script>
 ```
 
+## scrollSticky 固定显示横向滚动条
+
+通过 `scrollSticky` 字段决定是否开启横向滚动条，使用户在数据量多的情况下不需要拖到底部才能拉动横向滚动条。
+
+- 类型: `Boolean`
+- 必传: `否`
+
+##### 用法
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData" scrollSticky></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+
+export default {
+  data() {
+    return {
+      tableData: [],
+      loading: false
+    }
+  }
+}
+</script>
+```
+
 # 更新日志
 
-## 2021-11-17
+## 2021-12-25
+#### v1.1.6
+- 新增悬浮横向滚动条
 
+## 2021-11-17
+#### v1.1.0
 - 搜索栏新增（自定义搜索项）插槽
 - 浮动按钮新增（自定义按钮项）插槽
 - 浮动按钮新增 `disabled` 禁用属性
@@ -2524,7 +2554,6 @@ export default {
 
 > 持续开发、更新、优化，暂时计划要实现的功能如下:
 
-- 新增悬浮横向滚动条
 - 搜索栏新增高级搜索
 - 表格新增批量操作
 - 表格新增筛选列功能
