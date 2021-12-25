@@ -90,6 +90,10 @@ export default {
   methods: {
     scrollEventListener() {
       this.scrollOpt = {
+        overflowBehavior : {
+          x : "scroll",
+          y : "hidden"
+        },
         callbacks: {
           onScroll: () => {
             const positionX = this.$refs.scrollRef.osInstance().scroll().position.x
@@ -129,7 +133,9 @@ export default {
 .footer-wrap .pages {
   margin-top: 0;
 }
-
+.os-theme-thick-dark > .os-scrollbar-vertical {
+  display: none;
+}
 .os-theme-thick-dark > .os-scrollbar {
   padding: 5px;
 }
