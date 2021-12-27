@@ -16,7 +16,11 @@
       <div class="panel-body">
         <slot></slot>
         <search-bar @onSearch="onSearch" @onClear="onClear"></search-bar>
-        <table-layout :tableData="tableData" :loading="loading" :scrollSticky="scrollSticky"></table-layout>
+        <table-layout
+          :tableData="tableData"
+          :loading="loading"
+          :scrollSticky="scrollSticky"
+          :row-key="rowKey"></table-layout>
       </div>
       <table-pagination
         @sizeChange="sizeChange"
@@ -47,6 +51,12 @@ export default {
     return {}
   },
   props: {
+    rowKey: {
+      type: String,
+      default: function() {
+        return 'id'
+      }
+    },
     loading: {
       type: Boolean
     },

@@ -1,10 +1,34 @@
 <!-- Vue Single File Component, Created by liukun on 2021/7/2. -->
 <template>
   <transition name="fade" mode="out-in">
-    <el-table v-bind:class="{'scrollSticky': scrollSticky}" ref="tableRef" v-loading="loading" :data="data" border fit style="width: 100%">
-      <table-column v-for="(item, index) in tableColumns" :key="index" :item="item">
-        <template slot-scope="scope">
-          <div class="button-list">
+    <div class="table-wrap">
+      <div class="batch-handle" v-if="batchHandle.length > 0">
+        <div class="select">
+          <vue-svg @click.native="clearSlected" class="icon" name="error" width="12" height="12" color="#409EFF"></vue-svg>
+          <span>已选</span>
+          <b style="color:#E65D6E;font-weight:400">{{selectedRows.length}}</b>
+          <span>项目</span>
+        </div>
+        <ul class="select-list">
+          <li v-for="(item, index) in batchHandle" :key="index" @click="doBatchHandle(item)">
+            <vue-svg
+              :name="item.svg.name"
+              :path="item.svg.path || ''"
+              :width="item.svg.width || '12'"
+              :height="item.svg.height || '12'"
+              :color="item.svg.color || '#409EFF'"
+              :multipleColor="item.svg.multipleColor || false"
+              style="margin-right: 5px;">
+            </vue-svg>
+            <span>{{item.content}}</span>
+          </li>
+        </ul>
+      </div>
+      <el-table v-bind:class="{'scrollSticky': scrollSticky}" ref="tableRef" v-loading="loading" :data="data" border fit style="width: 100%" @row-click="onRowClick" :row-key="rowKey" @selection-change="handleSelectionChange">
+        <el-table-column align="center" type="selection" :reserve-selection="true" fixed="left" width="50" v-if="batchHandle.length > 0"></el-table-column>
+        <table-column v-for="(item, index) in tableColumns" :key="index" :item="item">
+          <template slot-scope="scope">
+            <div class="button-list">
             <span v-for="(button, index) in handleButton" :key="index" v-bind:class="button.class || ''">
               <span v-if="(button.isShow && button.isShow(scope.row)) || button.isShow === undefined">
                 <el-tooltip
@@ -13,10 +37,7 @@
                   :content="button.content"
                   placement="top">
                   <span class="circle">
-                    <el-button v-if="button.svg"
-                      style="width: 30px; height: 30px; position: relative;"
-                      v-on:click.stop="callbackEvent(button, scope.row, scope.$index)"
-                      :type="button.type" size="mini" circle>
+                    <el-button v-if="button.svg" style="width: 30px; height: 30px; position: relative;" v-on:click.stop="callbackEvent(button, scope.row, scope.$index)" :type="button.type" size="mini" circle>
                       <vue-svg
                         :name="button.svg.name"
                         :path="button.svg.path || ''"
@@ -27,31 +48,39 @@
                         style="position: absolute; top: 6px; left: 6px;">
                       </vue-svg>
                     </el-button>
-                    <el-button v-else
-                      style="width: 30px; height: 30px;"
-                      v-on:click.stop="callbackEvent(button, scope.row, scope.$index)"
-                      :type="button.type" :icon="button.icon" size="mini" circle>
+                    <el-button v-else style="width: 30px; height: 30px;" v-on:click.stop="callbackEvent(button, scope.row, scope.$index)" :type="button.type" :icon="button.icon" size="mini" circle>
                     </el-button>
                   </span>
                 </el-tooltip>
               </span>
             </span>
-          </div>
-        </template>
-      </table-column>
-    </el-table>
+            </div>
+          </template>
+        </table-column>
+      </el-table>
+    </div>
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
   inject: {
+    batchHandle: {
+      from: 'batchHandleSet',
+      default: () => []
+    },
     tableColumns: {
       from: 'tableColumnSet',
       default: () => []
     }
   },
   props: {
+    rowKey: {
+      type: String,
+      default: function() {
+        return 'id'
+      }
+    },
     loading: {
       type: Boolean
     },
@@ -86,6 +115,7 @@ export default {
   mounted () {},
   data() {
     return {
+      selectedRows: [],
       data: [],
       handleButton: []
     }
@@ -135,8 +165,30 @@ export default {
     }
   },
   methods: {
+    doBatchHandle(item) {
+      if (this.selectedRows.length === 0) {
+        this.$notify({
+          title: '没有选中任何数据',
+          type: 'error',
+          position: 'bottom-right'
+        })
+      } else {
+        this.$parent.$parent[item.event](item, this.selectedRows)
+      }
+
+    },
     callbackEvent(item, row, index) {
       this.$parent.$parent[item.event](row, index)
+    },
+    onRowClick(row, col, event) {
+      this.$refs.tableRef.toggleRowSelection(row)
+      this.$emit('toggleRowSelection', row)
+    },
+    handleSelectionChange(rows) {
+      this.selectedRows = rows
+    },
+    clearSlected() {
+      this.$refs.tableRef.clearSelection()
     }
   }
 }
@@ -154,5 +206,41 @@ export default {
 }
 .scrollSticky .el-table__fixed, .el-table__fixed-right {
   height: 100% !important;
+}
+</style>
+
+<style>
+.batch-handle {
+  font-size: 13px;
+  margin-bottom: 8px;
+  display: flex;
+}
+.batch-handle .select {
+  color: #999;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+}
+.batch-handle .select .icon {
+  margin-right: 5px;
+  cursor: pointer;
+}
+.batch-handle .select b {
+  min-width: 20px;
+  text-align: center;
+}
+.batch-handle .select-list {
+  list-style-type: none;
+  color: #409EFF;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.batch-handle .select-list li {
+  margin-right: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 </style>

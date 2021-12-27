@@ -10,6 +10,7 @@
     @onSearch="onSearch"
     @onClear="onClear"
     scrollSticky
+    row-key="name"
     :loading="loading">
     <template slot="more">
       <el-dropdown split-button type="primary" size="small">
@@ -49,6 +50,24 @@ export default {
   },
   provide() {
     return {
+      batchHandleSet: [
+        {
+          content: '开始',
+          svg: {
+            name: 'start'
+          },
+          event: 'doStart'
+        },
+        {
+          content: '停止',
+          svg: {
+            width: '16',
+            height: '16',
+            name: 'off'
+          },
+          event: 'doStop'
+        }
+      ],
       floatButtonSet: [
         {
           renderType: 'button',
@@ -269,6 +288,14 @@ export default {
     sizeChange(size) {
       this.pagination.size = size
       this.getData(1, size, this.search)
+    },
+    doStart(item, rows) {
+      console.log(item)
+      console.log(rows)
+    },
+    doStop(item, rows) {
+      console.log(item)
+      console.log(rows)
     }
   }
 }

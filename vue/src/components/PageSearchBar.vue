@@ -1,6 +1,6 @@
 <!-- Vue Single File Component, Created by liukun on 2021/7/2. -->
 <template>
-  <el-form :inline="true" v-if="SearchItems.length">
+  <el-form class="search-bar" :inline="true" v-if="SearchItems.length">
     <search-item
       v-for="(item, index) in SearchItems"
       :key="index"
@@ -173,3 +173,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.search-bar .el-form-item {
+  margin-bottom: 15px;
+}
+</style>
