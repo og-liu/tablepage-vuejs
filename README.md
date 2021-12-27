@@ -2440,6 +2440,52 @@ export default {
 - 可选参数: `sizes`, `prev`, `pager`, `next`, `jumper`, `total`
 - 默认值: `sizes`, `prev`, `pager`, `next`, `jumper`, `total`
 
+## batchHandleSet 批量操作配置
+> 需要注意与 `row-key` 配合使用，`row-key` 默认值是 `id`，若数据唯一标识需要自定义则需要自行传入对应字段。
+- 传入方式: `Provide`
+- 类型: `Array`，`对象数组`，每个元素都应该是一个对象，而每个对象表示每个批量的 `操作项`
+- 必传: `否`
+
+```vue
+<template>
+  <table-page title="高质量人类" :tableData="tableData" row-key="name"></table-page>
+</template>
+
+<script type="text/ecmascript-6">
+
+export default {
+  provide() {
+    return {
+      batchHandleSet: [
+        {
+          content: '开始',
+          svg: {
+            name: 'start'
+          },
+          event: 'doStart'
+        },
+        {
+          content: '停止',
+          svg: {
+            width: '16',
+            height: '16',
+            name: 'off'
+          },
+          event: 'doStop'
+        }
+      ]
+    }
+  },
+  data() {
+    return {
+      tableData: [],
+      loading: false
+    }
+  }
+}
+</script>
+```
+
 ## loading 加载动画
 
 表格数据加载动画
@@ -2531,9 +2577,13 @@ export default {
 
 # 更新日志
 
+## 2021-12-27
+##### v1.1.7
+- 新增 [批量操作](##?id=batchhandleset-批量操作配置) 功能
+
 ## 2021-12-25
 ##### v1.1.6
-- 新增悬浮横向滚动条
+- 新增 [固定显示横向滚动条](##?id=scrollsticky-固定显示横向滚动条) 功能
 
 ## 2021-11-17
 ##### v1.1.0
@@ -2555,7 +2605,6 @@ export default {
 > 持续开发、更新、优化，暂时计划要实现的功能如下:
 
 - 搜索栏新增高级搜索
-- 表格新增批量操作
 - 表格新增筛选列功能
 - 浮动按钮新增svg图标
 
