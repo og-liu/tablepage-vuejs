@@ -26,7 +26,7 @@
 
     <!-- 解决 el-tabble 搭配 v-loadding 导致表格上、右外边框渲染问题 -->
     <div v-show="loading" style="position: relative; width: 100%; height: 1px; background-color: #FFF; opacity: 0.9; margin-bottom: -1px; z-index: 1;"></div>
-    <div v-show="loading" style="position: absolute; z-index: 1; width: 1px; height: 609px; background-color: #FFF; opacity: 0.9"></div>
+    <div ref="line-y" v-show="loading" style="position: absolute; z-index: 1; width: 1px; height: 609px; background-color: #FFF; opacity: 0.9"></div>
 
     <el-table v-bind:class="{'scrollSticky': scrollSticky}" ref="tableRef" v-loading="loading" :data="data" border fit style="width: 100%" @row-click="onRowClick" :row-key="rowKey" @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" :reserve-selection="true" fixed="left" width="50" v-if="batchHandle.length > 0"></el-table-column>
@@ -98,6 +98,11 @@ export default {
     }
   },
   watch: {
+    loading: {
+      handler (val) {
+        if (val) this.$refs['line-y'].style.height = this.$refs.tableRef.fixedHeight.height
+      }
+    },
     tableData: {
       handler (val) {
         this.$set(this, 'data', val)
