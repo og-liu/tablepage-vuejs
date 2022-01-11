@@ -1,34 +1,38 @@
 <!-- Vue Single File Component, Created by liukun on 2021/7/2. -->
 <template>
-  <transition name="fade" mode="out-in">
-    <div class="table-wrap">
-      <div class="batch-handle" v-if="batchHandle.length > 0">
-        <div class="select">
-          <vue-svg @click.native="clearSlected" class="icon" name="error" width="12" height="12" color="#409EFF"></vue-svg>
-          <span>已选</span>
-          <b style="color:#E65D6E;font-weight:400">{{selectedRows.length}}</b>
-          <span>项目</span>
-        </div>
-        <ul class="select-list">
-          <li v-for="(item, index) in batchHandle" :key="index" @click="doBatchHandle(item)">
-            <vue-svg
-              :name="item.svg.name"
-              :path="item.svg.path || ''"
-              :width="item.svg.width || '12'"
-              :height="item.svg.height || '12'"
-              :color="item.svg.color || '#409EFF'"
-              :multipleColor="item.svg.multipleColor || false"
-              style="margin-right: 5px;">
-            </vue-svg>
-            <span>{{item.content}}</span>
-          </li>
-        </ul>
+  <div class="table-wrap">
+    <div class="batch-handle" v-if="batchHandle.length > 0">
+      <div class="select">
+        <vue-svg @click.native="clearSlected" class="icon" name="error" width="12" height="12" color="#409EFF"></vue-svg>
+        <span>已选</span>
+        <b style="color:#E65D6E;font-weight:400">{{selectedRows.length}}</b>
+        <span>项目</span>
       </div>
-      <el-table v-bind:class="{'scrollSticky': scrollSticky}" ref="tableRef" v-loading="loading" :data="data" border fit style="width: 100%" @row-click="onRowClick" :row-key="rowKey" @selection-change="handleSelectionChange">
-        <el-table-column align="center" type="selection" :reserve-selection="true" fixed="left" width="50" v-if="batchHandle.length > 0"></el-table-column>
-        <table-column v-for="(item, index) in tableColumns" :key="index" :item="item">
-          <template slot-scope="scope">
-            <div class="button-list">
+      <ul class="select-list">
+        <li v-for="(item, index) in batchHandle" :key="index" @click="doBatchHandle(item)">
+          <vue-svg
+            :name="item.svg.name"
+            :path="item.svg.path || ''"
+            :width="item.svg.width || '12'"
+            :height="item.svg.height || '12'"
+            :color="item.svg.color || '#409EFF'"
+            :multipleColor="item.svg.multipleColor || false"
+            style="margin-right: 5px;">
+          </vue-svg>
+          <span>{{item.content}}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 解决 el-tabble 搭配 v-loadding 导致表格上、右外边框渲染问题 -->
+    <div v-show="loading" style="position: relative; width: 100%; height: 1px; background-color: #FFF; opacity: 0.9; margin-bottom: -1px; z-index: 1;"></div>
+    <div v-show="loading" style="position: absolute; z-index: 1; width: 1px; height: 609px; background-color: #FFF; opacity: 0.9"></div>
+
+    <el-table v-bind:class="{'scrollSticky': scrollSticky}" ref="tableRef" v-loading="loading" :data="data" border fit style="width: 100%" @row-click="onRowClick" :row-key="rowKey" @selection-change="handleSelectionChange">
+      <el-table-column align="center" type="selection" :reserve-selection="true" fixed="left" width="50" v-if="batchHandle.length > 0"></el-table-column>
+      <table-column v-for="(item, index) in tableColumns" :key="index" :item="item">
+        <template slot-scope="scope">
+          <div class="button-list">
             <span v-for="(button, index) in handleButton" :key="index" v-bind:class="button.class || ''">
               <span v-if="(button.isShow && button.isShow(scope.row)) || button.isShow === undefined">
                 <el-tooltip
@@ -54,12 +58,11 @@
                 </el-tooltip>
               </span>
             </span>
-            </div>
-          </template>
-        </table-column>
-      </el-table>
-    </div>
-  </transition>
+          </div>
+        </template>
+      </table-column>
+    </el-table>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -242,5 +245,11 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: center;
+}
+</style>
+
+<style>
+.table-wrap .el-table--border.el-loading-parent--relative {
+  border-color: #EBEEF5!important;
 }
 </style>

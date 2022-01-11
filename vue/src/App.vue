@@ -271,6 +271,7 @@ export default {
         }
         this.loading = false
       }).catch(function (error) {
+        this.loading = false
         console.log(error)
       })
     },
