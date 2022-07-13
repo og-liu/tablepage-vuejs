@@ -35,27 +35,29 @@
           <div class="button-list">
             <span v-for="(button, index) in handleButton" :key="index" v-bind:class="button.class || ''">
               <span v-if="(button.isShow && button.isShow(scope.row)) || button.isShow === undefined">
-                <el-tooltip
-                  style="margin: 0 4px;"
-                  :enterable="false"
-                  :content="button.content"
-                  placement="top">
-                  <span class="circle">
-                    <el-button v-if="button.svg" style="width: 30px; height: 30px; position: relative;" v-on:click.stop="callbackEvent(button, scope.row, scope.$index)" :type="button.type" size="mini" circle>
-                      <vue-svg
-                        :name="button.svg.name"
-                        :path="button.svg.path || ''"
-                        :width="button.svg.width || '16'"
-                        :height="button.svg.height || '16'"
-                        :color="button.svg.color || ''"
-                        :multipleColor="button.svg.multipleColor || false"
-                        style="position: absolute; top: 6px; left: 6px;">
-                      </vue-svg>
-                    </el-button>
-                    <el-button v-else style="width: 30px; height: 30px;" v-on:click.stop="callbackEvent(button, scope.row, scope.$index)" :type="button.type" :icon="button.icon" size="mini" circle>
-                    </el-button>
-                  </span>
-                </el-tooltip>
+                <span v-permission="button.permission ? button.permission : ''">
+                  <el-tooltip
+                    style="margin: 0 4px;"
+                    :enterable="false"
+                    :content="button.content"
+                    placement="top">
+                    <span class="circle">
+                      <el-button v-if="button.svg" style="width: 30px; height: 30px; position: relative;" v-on:click.stop="callbackEvent(button, scope.row, scope.$index)" :type="button.type" size="mini" circle>
+                        <vue-svg
+                          :name="button.svg.name"
+                          :path="button.svg.path || ''"
+                          :width="button.svg.width || '16'"
+                          :height="button.svg.height || '16'"
+                          :color="button.svg.color || ''"
+                          :multipleColor="button.svg.multipleColor || false"
+                          style="position: absolute; top: 6px; left: 6px;">
+                        </vue-svg>
+                      </el-button>
+                      <el-button v-else style="width: 30px; height: 30px;" v-on:click.stop="callbackEvent(button, scope.row, scope.$index)" :type="button.type" :icon="button.icon" size="mini" circle>
+                      </el-button>
+                    </span>
+                  </el-tooltip>
+                </span>
               </span>
             </span>
           </div>
