@@ -74,7 +74,37 @@
         noData: '没有找到匹配的结果',
         depth: 2
       },
-      vueGlobalOptions: {},
+      vueGlobalOptions: {
+        mounted() {
+          // 菜单栏头部图文排版布局
+          const oDiv = document.createElement('div')
+          const oImg = document.createElement('img');
+          const oP = document.createElement('p');
+          const oA = document.createElement('a');
+          oImg.src = 'https://www.giaott.com/images/2022/07/04/2LQoY.png'
+          oDiv.id = 'carbonads'
+          oP.innerText = '复杂的数据结构均由 Provide / Inject 方式交互，让组件使用起来更加方便。'
+          oA.innerText = '了解详情'
+          oA.href = 'https://cn.vuejs.org/v2/api/#provide-inject'
+          oA.target = '_blank'
+          oDiv.appendChild(oImg)
+          oP.appendChild(oA)
+          oDiv.appendChild(oP)
+          document.getElementsByClassName('sidebar-nav')[0].appendChild(oDiv)
+
+          // 屏蔽在线预览报错信息
+          const head = document.getElementsByTagName('iframe')[0].contentWindow.document.getElementsByTagName('head')[0]
+          const styleTag = document.createElement('style')
+          styleTag.type = 'text/css'
+          styleTag.innerHTML = "#body #error {display: none !important};}"
+          head.appendChild(styleTag)
+
+          // 修复在线预览按钮高度不一致问题
+          const fontSize = document.createElement('style')
+          fontSize.innerHTML = "#TablePage .el-button--small {font-size: 13px;}"
+          head.appendChild(fontSize)
+        }
+      },
       run: {
         themeColor: 'green',
         themeBorderColor: '#eee',
@@ -84,28 +114,14 @@
         isHideHeader: false,
         jsLabs: [
           'https://unpkg.com/element-ui/lib/index.js',
-          'https://unpkg.com/tablepage-vuejs@1.1.9/dist/table-page.min.js',
+          'https://unpkg.com/tablepage-vuejs@1.2.0/dist/table-page.min.js',
           'https://unpkg.com/axios/dist/axios.min.js'
         ],
-        cssLabs: ['https://unpkg.com/element-ui/lib/theme-chalk/index.css'],
+        cssLabs: ['https://unpkg.com/element-ui/lib/theme-chalk/index.css']
       }
     }
     window.onload = function(){
-      var sidebarNav = document.getElementsByClassName('sidebar-nav')[0]
-      var oDiv = document.createElement('div')
-      var oImg = document.createElement('img');
-      var oP = document.createElement('p');
-      var oA = document.createElement('a');
-      oImg.src = 'https://cdn.jsdelivr.net/gh/og-liu/image-host/20211117154823.png'
-      oDiv.id = 'carbonads'
-      oP.innerText = '复杂的数据结构均由 Provide / Inject 方式交互，让组件使用起来更加方便。'
-      oA.innerText = '了解详情'
-      oA.href = 'https://cn.vuejs.org/v2/api/#provide-inject'
-      oA.target = '_blank'
-      oDiv.appendChild(oImg)
-      oP.appendChild(oA)
-      oDiv.appendChild(oP)
-      sidebarNav.appendChild(oDiv)
+
     }
   </script>
   <!-- Docsify v4 -->
