@@ -76,4 +76,4 @@ section.cover.has-mask .mask {opacity: 0.86;}
 [GitHub](https://github.com/og-liu/tablepage-vuejs)
 [Get Started](#快速上手)
 
-![](https://www.giaott.com/images/2022/07/04/2LDLp.jpg)
+![](https://img.ogliu.com/tablepage/20211117155017.jpg)
