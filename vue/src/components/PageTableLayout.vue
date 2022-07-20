@@ -28,7 +28,7 @@
     <div v-show="loading" style="position: relative; width: 100%; height: 1px; background-color: #FFF; opacity: 0.9; margin-bottom: -1px; z-index: 1;"></div>
     <div ref="line-y" v-show="loading" style="position: absolute; z-index: 1; width: 1px; height: 609px; background-color: #FFF; opacity: 0.9"></div>
 
-    <el-table v-bind:class="{'scrollSticky': scrollSticky}" ref="tableRef" v-loading="loading" :data="data" border fit style="width: 100%" @row-click="onRowClick" :row-key="rowKey" @selection-change="handleSelectionChange">
+    <el-table ref="tableRef" v-loading="loading" :data="data" border fit style="width: 100%" @row-click="onRowClick" :row-key="rowKey" @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" :reserve-selection="true" fixed="left" width="50" v-if="batchHandle.length > 0"></el-table-column>
       <table-column v-for="(item, index) in tableColumns" :key="index" :item="item">
         <template slot-scope="scope">
@@ -93,10 +93,6 @@ export default {
     tableData: {
       type: Array,
       required: false
-    },
-    scrollSticky: {
-      type: Boolean,
-      default: true
     }
   },
   watch: {
@@ -208,37 +204,30 @@ export default {
 .button-list {
   text-align: left; display: flex; align-items: center;
 }
-</style>
 
-<style>
-.scrollSticky .el-table__body-wrapper {
-  overflow-x: hidden !important;
-}
-.scrollSticky .el-table__fixed, .el-table__fixed-right {
-  height: 100% !important;
-}
-</style>
-
-<style>
 .batch-handle {
   font-size: 13px;
   margin-bottom: 8px;
   display: flex;
 }
+
 .batch-handle .select {
   color: #999;
   margin-right: 20px;
   display: flex;
   align-items: center;
 }
+
 .batch-handle .select .icon {
   margin-right: 5px;
   cursor: pointer;
 }
+
 .batch-handle .select b {
   min-width: 20px;
   text-align: center;
 }
+
 .batch-handle .select-list {
   list-style-type: none;
   color: #409EFF;
@@ -253,9 +242,7 @@ export default {
   display: flex;
   align-items: center;
 }
-</style>
 
-<style>
 .table-wrap .el-table--border.el-loading-parent--relative {
   border-color: #EBEEF5!important;
 }

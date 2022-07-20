@@ -1,36 +1,37 @@
 <template>
-  <table-page
-    title="高质量人类"
-    subtitle="让天下没有难找的对象"
-    :tableData="tableData"
-    @currentChange="currentChange"
-    @sizeChange="sizeChange"
-    backButton
-    @goBack="goBack"
-    @onSearch="onSearch"
-    @onClear="onClear"
-    scrollSticky
-    row-key="name"
-    :loading="loading">
-    <template slot="more">
-      <el-dropdown split-button type="primary" size="small">
-        更多名单
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>凶猛的小萝莉</el-dropdown-item>
-          <el-dropdown-item>沧伤的小正太</el-dropdown-item>
-          <el-dropdown-item>娇萌的怪叔叔</el-dropdown-item>
-          <el-dropdown-item>恐怖的御姐姐</el-dropdown-item>
-          <el-dropdown-item>性感的老阿姨</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </template>
-    <template slot="names" slot-scope="scope">
-      <div style="color: #409eff">{{scope.row.name}}</div>
-    </template>
-    <template slot="birthday" slot-scope="scope">
-      <el-date-picker size="small" v-model="birthday" type="date" placeholder="选择日期"></el-date-picker>
-    </template>
-  </table-page>
+  <div style="min-width: 1050px">
+    <table-page
+      title="高质量人类"
+      subtitle="让天下没有难找的对象"
+      :tableData="tableData"
+      @currentChange="currentChange"
+      @sizeChange="sizeChange"
+      backButton
+      @goBack="goBack"
+      @onSearch="onSearch"
+      @onClear="onClear"
+      row-key="name"
+      :loading="loading">
+      <template slot="more">
+        <el-dropdown split-button type="primary" size="small">
+          更多名单
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>凶猛的小萝莉</el-dropdown-item>
+            <el-dropdown-item>沧伤的小正太</el-dropdown-item>
+            <el-dropdown-item>娇萌的怪叔叔</el-dropdown-item>
+            <el-dropdown-item>恐怖的御姐姐</el-dropdown-item>
+            <el-dropdown-item>性感的老阿姨</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </template>
+      <template slot="names" slot-scope="scope">
+        <div style="color: #409eff">{{scope.row.name}}</div>
+      </template>
+      <template slot="birthday" slot-scope="scope">
+        <el-date-picker size="small" v-model="birthday" type="date" placeholder="选择日期"></el-date-picker>
+      </template>
+    </table-page>
+  </div>
 </template>
 
 <script>
@@ -301,3 +302,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.el-dropdown .el-dropdown__caret-button {
+  padding-top: 8.5px;
+}
+</style>
